@@ -49,7 +49,7 @@ const LeftDrawer = props => {
       span: {
         paddingTop: 0,
         display: "block",
-        color: "purple",
+        color: "black",
         fontWeight: 400,
         fontSize: 19,
         textShadow: "1px 1px #444"
@@ -77,8 +77,8 @@ const LeftDrawer = props => {
           style={styles.avatar.icon}
         />
         <span style={styles.avatar.span}>
-          {props.username}
-
+          {props.firstName}
+{/*
           <IconMenu
             color={white}
             iconButtonElement={
@@ -90,12 +90,15 @@ const LeftDrawer = props => {
             anchorOrigin={{ horizontal: "right", vertical: "top" }}
           >
             <MenuItem
-              primaryText="Sign out"
+              primaryText="Выйти"
               leftIcon={<SettingsPower />}
               onClick={event => handleClick(event)}
             />
-            <MenuItem primaryText="Change password" leftIcon={<VpnKey />} />
-          </IconMenu>
+            <MenuItem primaryText="Сменить пароль" leftIcon={<VpnKey />} />
+          </IconMenu>*/}
+        </span>
+        <span style={styles.avatar.span}>
+          {props.lastName}
         </span>
       </div>
       <div>

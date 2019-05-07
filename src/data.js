@@ -12,15 +12,14 @@ import ChevronRight from "material-ui/svg-icons/navigation/chevron-right";
 
 const data = {
   menus: [
-    { text: "DashBoard", icon: <Assessment />, link: "/dashboard" },
-    { text: "Order", icon: <GridOn />, link: "/orders" },
-    { text: "Customer", icon: <PermIdentity />, link: "/customers" },
-    { text: "Product", icon: <GridOn />, link: "/products" },
-    { text: "About", icon: <Web />, link: "/about" }
+    { text: "Главное", icon: <Assessment />, link: "/dashboard" },
+    { text: "Заказы", icon: <GridOn />, link: "/orders" },
+    { text: "Потребители", icon: <PermIdentity />, link: "/customers" },
+    { text: "Продукты", icon: <GridOn />, link: "/products" },
   ],
   signOutMenus: [
-    { text: "Sign out", icon: <SettingsPower />, link: "/login" },
-    { text: "Change password", icon: <VpnKey />, link: "" }
+    { text: "Выход", icon: <SettingsPower />, link: "/login" },
+    { text: "Сменить пароль", icon: <VpnKey />, link: "" }
   ],
   tablePage: {
     items: [

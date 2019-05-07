@@ -1,30 +1,31 @@
-import React, { PropTypes } from "react";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import Menu from "material-ui/svg-icons/navigation/menu";
-import { white } from "material-ui/styles/colors";
-// import FlatButton from "material-ui/FlatButton";
+import React, { PropTypes } from 'react'
+import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import Menu from 'material-ui/svg-icons/navigation/menu'
+import { white } from 'material-ui/styles/colors'
+import Exit from 'material-ui/svg-icons/action/exit-to-app'
 
+// import FlatButton from "material-ui/FlatButton";
 
 class Header extends React.Component {
 
-  constructor() {
+  constructor () {
     super()
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick() {
-    window.open("https://github.com/harryho/react-crm", false);
+  handleClick () {
+    this.props.onLogoutClick();
   }
 
-  render() {
-    const { styles, handleChangeRequestNavDrawer } = this.props;
+  render () {
+    const {styles, handleChangeRequestNavDrawer} = this.props
 
     const style = {
       appBar: {
-        position: "fixed",
+        position: 'fixed',
         top: 0,
-        overflow: "hidden",
+        overflow: 'hidden',
         maxHeight: 57
       },
       menuButton: {
@@ -37,12 +38,12 @@ class Header extends React.Component {
         marginLeft: 20,
         marginRight: 10
       }
-    };
+    }
 
     return (
       <div>
         <AppBar
-          style={{ ...styles, ...style.appBar }}
+          style={{...styles, ...style.appBar}}
           /*title={ <SearchBox />  }*/
           iconElementLeft={
             <div style={style.iconsLeftContainer}>
@@ -51,32 +52,33 @@ class Header extends React.Component {
                 style={style.menuButton}
                 onClick={handleChangeRequestNavDrawer}
               >
-                <Menu color={white} />
+                <Menu color={white}/>
               </IconButton>
             </div>
           }
           iconElementRight={
-            <div >
+            <div>
               <IconButton
-                tooltip="GitHub"
-                tooltipPosition="center-left"
+                tooltip='Выход'
+                color='white'
+                tooltipPosition='center-left'
                 onClick={this.handleClick}
-              >
-                <svg height="30" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                </svg>
-              </IconButton>
+              />
+              <Exit
+                color='white'
+              />
             </div>
           }
         />
       </div>
-    );
+    )
   }
 }
 
 Header.propTypes = {
   styles: PropTypes.object,
-  handleChangeRequestNavDrawer: PropTypes.func
-};
+  handleChangeRequestNavDrawer: PropTypes.func,
+  onLogoutClick: PropTypes.func.isRequired
+}
 
-export default Header;
+export default Header
