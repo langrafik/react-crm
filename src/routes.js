@@ -12,6 +12,7 @@ import OrderListPage from "./containers/OrderListPage";
 import OrderFormPage from "./containers/OrderFormPage";
 import ProductFormPage from "./containers/ProductFormPage";
 import ProductListPage from "./containers/ProductListPage";
+import CalendarPage from './containers/CalendarPage'
 
 export default (
   <Route>
@@ -20,6 +21,7 @@ export default (
       <Route path="dashboard" component={Dashboard} />
       <Route path="form" component={FormPage} />
       <Route path="customer" component={CustomerFormPage} />
+      <Route path="calendar" component={CalendarPage} />
       <Route path="customer/:id" component={CustomerFormPage} />
       <Route path="order" component={OrderFormPage} />
       <Route path="order/:id" component={OrderFormPage} />

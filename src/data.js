@@ -1,6 +1,7 @@
 import React from "react";
 import Assessment from "material-ui/svg-icons/action/assessment";
 import GridOn from "material-ui/svg-icons/image/grid-on";
+import CalendarIcon from "material-ui/svg-icons/action/perm-contact-calendar";
 import PermIdentity from "material-ui/svg-icons/action/perm-identity";
 import SettingsPower from "material-ui/svg-icons/action/settings-power";
 import VpnKey from "material-ui/svg-icons/communication/vpn-key";
