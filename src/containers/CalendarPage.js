@@ -1,27 +1,22 @@
 import React, { PropTypes } from 'react'
 import {
-  pink500,
-  grey200,
   grey500,
   green400,
   teal500,
   white
 } from 'material-ui/styles/colors'
 import PageBase from '../components/PageBase'
-// import Data from '../data';
 import { connect } from 'react-redux'
 import { loadProducts, deleteProduct } from '../actions/product'
 import FlatButton from 'material-ui/FlatButton'
-
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 import Timeline from 'react-calendar-timeline'
-// make sure you include the timeline stylesheet or the timeline will not be styled
 import 'react-calendar-timeline/lib/Timeline.css'
 import { loadCustomers } from '../actions/customer'
 
-class ProductListPage extends React.Component {
+class CalendarPage extends React.Component {
   constructor (props) {
     super(props)
 
@@ -234,15 +229,19 @@ class ProductListPage extends React.Component {
     let groups = []
     let items = []
 
+    //Перебираем сотрудников
     if (customerList && customerList.length) {
       customerList.map((customer, ind) => {
+        //groups это правая колонка с именами сотрудников в календаре
         groups.push({
           id: ind,
           title: customer.firstName + ' ' + customer.lastName
         })
 
+
         if (customer.worktime) {
           customer.worktime.map((t, i) => (
+            //items это записи времени на шкале
             items.push({
               title: t.title,
               start_time: moment(t.start_time),//t.start_time,
@@ -255,31 +254,6 @@ class ProductListPage extends React.Component {
       })
     }
 
-/*
-    items = [
-      {
-        id: '0_0',
-        group: 1,
-        title: 'Рус',
-        start_time: moment(),
-        end_time: moment().add(1, 'hour')
-      },
-      {
-        id: 2,
-        group: 2,
-        title: 'item 2',
-        start_time: moment().add(-0.5, 'hour'),
-        end_time: moment().add(0.5, 'hour')
-      },
-      {
-        id: 3,
-        group: 1,
-        title: 'item 3',
-        start_time: moment().add(2, 'hour'),
-        end_time: moment().add(3, 'hour')
-      }
-    ]*/
-
     return (
       <PageBase
         navigation='Производственный календарь'
@@ -291,20 +265,13 @@ class ProductListPage extends React.Component {
             defaultTimeStart={moment().add(-12, 'hour')}
             defaultTimeEnd={moment().add(12, 'hour')}
           />
-
-          {/*          <BigCalendar
-            localizer={localizer}
-            events={[]}
-            startAccessor="start"
-            endAccessor="end"
-          />*/}
         </div>
       </PageBase>
     )
   }
 }
 
-ProductListPage.propTypes = {
+CalendarPage.propTypes = {
   productList: PropTypes.array,
   getAllProducts: PropTypes.func.isRequired,
   getAllCustomers: PropTypes.func.isRequired,
@@ -343,4 +310,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarPage)
