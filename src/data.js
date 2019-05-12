@@ -2,7 +2,6 @@ import React from "react";
 import Assessment from "material-ui/svg-icons/action/assessment";
 import GridOn from "material-ui/svg-icons/image/grid-on";
 import PermIdentity from "material-ui/svg-icons/action/perm-identity";
-import Web from "material-ui/svg-icons/av/web";
 import SettingsPower from "material-ui/svg-icons/action/settings-power";
 import VpnKey from "material-ui/svg-icons/communication/vpn-key";
 import { cyan600, pink600, purple600 } from "material-ui/styles/colors";
@@ -14,7 +13,8 @@ const data = {
   menus: [
     { text: "Главное", icon: <Assessment />, link: "/dashboard" },
     { text: "Заказы", icon: <GridOn />, link: "/orders" },
-    { text: "Потребители", icon: <PermIdentity />, link: "/customers" },
+    { text: "Календарь", icon: <CalendarIcon />, link: "/calendar" },
+    { text: "Сотрудники", icon: <PermIdentity />, link: "/customers" },
     { text: "Продукты", icon: <GridOn />, link: "/products" },
   ],
   signOutMenus: [
