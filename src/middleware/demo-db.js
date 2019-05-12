@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export default {
   'token': {
     'access_token': 'fake-token-12345789-abcdefgh',

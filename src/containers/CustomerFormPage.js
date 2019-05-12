@@ -141,9 +141,6 @@ class CustomerFormPage extends React.Component {
                   onChange={this.handleChange}
                   fullWidth={true}
                   value={customer.firstName ? customer.firstName : ""}
-                  validations={{
-                    isWords: true
-                  }}
                   validationErrors={{
                     isWords: "Please provide valid first name",
                     isDefaultRequiredValue: "This is a required field"
@@ -157,9 +154,6 @@ class CustomerFormPage extends React.Component {
                   fullWidth={true}
                   name="lastName"
                   onChange={this.handleChange}
-                  validations={{
-                    isWords: true
-                  }}
                   validationErrors={{
                     isWords: "Please provide valid first name",
                     isDefaultRequiredValue: "This is a required field"

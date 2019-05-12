@@ -15,6 +15,11 @@ import moment from 'moment'
 import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
 import { loadCustomers } from '../actions/customer'
+import Dialog from "material-ui/Dialog";
+import RaisedButton from "material-ui/RaisedButton";
+import DatePicker from "material-ui/DatePicker";
+import TimePicker from "material-ui/TimePicker";
+import Divider from "material-ui/Divider";
 
 class CalendarPage extends React.Component {
   constructor (props) {
@@ -36,6 +41,9 @@ class CalendarPage extends React.Component {
       showCheckboxes: false,
       pageOfItems: [],
       productId: null,
+      customerEndTime: moment().toDate(),
+      customerDate: moment().toDate(),
+      customerStartTime: moment().toDate(),
       dialogText: 'Are you sure to do this?',
       search: {
         product: ''
@@ -51,6 +59,9 @@ class CalendarPage extends React.Component {
     this.handleSearchCustomers = this.handleSearchCustomers.bind(this)
     this.handleErrorMessage = this.handleErrorMessage.bind(this)
     this.handleSnackBarClose = this.handleSnackBarClose.bind(this)
+    this.onItemClick = this.onItemClick.bind(this)
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleOk = this.handleOk.bind(this);
 
     if (this.props.productList || this.props.productList.length < 1)
       props.getAllProducts(this.state.search)
@@ -152,79 +163,26 @@ class CalendarPage extends React.Component {
     })
   }
 
+  onItemClick(itemId, e, time) {
+    debugger
+    this.setState({
+      timeEdit: true,
+      itemId
+    })
+  }
+
+  handleCancel() {
+    this.setState({ timeEdit: false });
+  }
+
+  handleOk() {
+    const { order } = this.state;
+
+    this.setState({ timeEdit: false });
+  }
+
   render () {
     const {errorMessage, productList, customerList} = this.props
-
-    const styles = {
-      fab: {
-        // margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed',
-        marginRight: 20
-      },
-      fabSearch: {
-        // margin: 0,
-        top: 'auto',
-        right: 100,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed',
-        marginRight: 20,
-        backgroundColor: 'lightblue'
-      },
-      editButton: {
-        paddingRight: 25
-      },
-      editButtonIcon: {
-        fill: white
-      },
-      deleteButton: {
-        fill: grey500
-      },
-      columns: {
-        id: {
-          width: '10%'
-        },
-        name: {
-          width: '40%'
-        },
-        price: {
-          width: '20%',
-          textAlign: 'right'
-        },
-        category: {
-          width: '20%'
-        },
-        edit: {
-          width: '20%'
-        }
-      },
-      dialog: {
-        width: '20%',
-        maxWidth: 'none'
-      },
-      drawer: {
-        backgroundColor: 'lightgrey'
-      }
-    }
-
-    const actions = [
-      <FlatButton
-        label='Cancel'
-        primary={true}
-        value={false}
-        onTouchTap={() => this.handleClose(false)}
-      />,
-      <FlatButton
-        label='Confirm'
-        primary={true}
-        value={true}
-        onTouchTap={() => this.handleClose(true)}
-      />
-    ]
 
     let groups = []
     let items = []
@@ -262,9 +220,46 @@ class CalendarPage extends React.Component {
           <Timeline
             groups={groups}
             items={items}
+            onItemClick={this.onItemClick}
             defaultTimeStart={moment().add(-12, 'hour')}
             defaultTimeEnd={moment().add(12, 'hour')}
           />
+
+          <Dialog
+            title="Редактировать время"
+            open={this.state.timeEdit}
+            ignoreBackdropClick
+            ignoreEscapeKeyUp
+            maxWidth="xs"
+          >
+            <div>
+              <DatePicker
+                defaultDate={this.state.customerDate}
+                floatingLabelText="Выберите дату"
+                fullWidth={true}
+              />
+              <TimePicker
+                floatingLabelText="Выберите время начала"
+                fullWidth={true}
+                defaultTime={this.state.customerStartTime} />
+              <TimePicker
+                floatingLabelText="Выберите время окончания"
+                fullWidth={true}
+                defaultTime={this.state.customerEndTime}
+                style={{marginBottom: '20'}}/>
+              <span>
+                  <RaisedButton onClick={this.handleCancel} color="primary">
+                    Отмена
+                  </RaisedButton>
+                  <RaisedButton
+                    onClick={this.handleOk}
+                    primary={true}
+                    color="primary">
+                    OK
+                  </RaisedButton>
+                </span>
+            </div>
+          </Dialog>
         </div>
       </PageBase>
     )
