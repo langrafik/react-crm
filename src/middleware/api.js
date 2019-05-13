@@ -32,7 +32,9 @@ function getEmbed(action) {
 
 function callApi(endpoint, authenticated, method, data) {
   // const token = localStorage.getItem("token") || null;
-  const config = {};
+  const config = {
+    method
+  };
 
   const getData = (action) => {
 
@@ -84,10 +86,11 @@ function callApi(endpoint, authenticated, method, data) {
     return new Promise(function (resolve, reject) {
       const model = getModel(action)
       const idx = ds[model].findIndex(d => d.id === data.id)
-      ds[model][idx] = Object.assign({}, data)
+      let result = ds[model][idx] = Object.assign({}, data)
       setTimeout(resolve, 200, JSON.stringify(result))
     })
   }
+
   const deleteData = (action) => {
     return new Promise(function (resolve, reject) {
       const model = getModel(action)
@@ -162,7 +165,6 @@ export default store => next => action => {
 
   const [requestType, successType, errorType] = types;
 
-  // Passing the authenticated boolean back in our data will let us distinguish between normal and secret quotes
   return callApi(endpoint, authenticated, method, data).then(
     response =>
       next({
@@ -177,4 +179,30 @@ export default store => next => action => {
         type: errorType
       })
   );
+  /*
+  // Passing the authenticated boolean back in our data will let us distinguish between normal and secret quotes
+  return callApi(endpoint, authenticated, method, data).then((response) => {
+    console.log(response)
+    debugger;
+
+    return next({
+      response,
+      authenticated,
+      filters: filters,
+      type: successType
+    })
+  })*/
+/*    response =>
+      next({
+        response,
+        authenticated,
+        filters: filters,
+        type: successType
+      }),
+    error =>
+      next({
+        error: error,
+        type: errorType
+      })
+  );*/
 };

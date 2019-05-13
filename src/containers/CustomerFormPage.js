@@ -18,9 +18,25 @@ import {
   addCustomer,
   newCustomer
 } from "../actions/customer";
-import { FormsyText } from "formsy-material-ui/lib";
+import { FormsySelect, FormsyText } from 'formsy-material-ui/lib'
 import Formsy from "formsy-react";
 import autoBind from "react-autobind";
+import MenuItem from 'material-ui/MenuItem'
+
+const groups = [
+  {
+    id: 0,
+    name: 'Маркетолог'
+  },
+  {
+    id: 1,
+    name: 'Оператор'
+  },
+  {
+    id: 2,
+    name: 'Руководитель'
+  }
+]
 
 class CustomerFormPage extends React.Component {
   constructor(props) {
@@ -31,7 +47,7 @@ class CustomerFormPage extends React.Component {
       customer: {}
     };
 
-    // this.handleChange = this.handleChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
     // this.handleClick = this.handleClick.bind(this);
     // this.enableButton = this.enableButton.bind(this);
     // this.notifyFormError = this.notifyFormError.bind(this);
@@ -47,8 +63,7 @@ class CustomerFormPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (
       this.props.customer &&
-      nextProps.customer &&
-      this.props.customer.id != nextProps.customer.id
+      nextProps.customer
     ) {
       this.setState({ isFetching: false });
       this.setState({ customer: Object.assign({}, nextProps.customer) });
@@ -71,6 +86,12 @@ class CustomerFormPage extends React.Component {
       customer[field] = event.target.value;
       this.setState({ customer: customer });
     }
+  }
+
+  handleGroupChange(event, value) {
+    let customer = Object.assign({}, this.state.customer);
+    customer['group'] = value;
+    this.setState({ customer: customer });
   }
 
   enableButton() {
@@ -161,6 +182,24 @@ class CustomerFormPage extends React.Component {
                   value={customer.lastName ? customer.lastName : ""}
                   required
                 />
+
+                <FormsySelect
+                  floatingLabelText="Группа пользователя"
+                  value={customer.group || 0}
+                  onChange={this.handleGroupChange}
+                  style={styles.customWidth}
+                  name="customerId"
+                >
+                  {groups.map((g, index) => (
+                    <MenuItem
+                      key={index}
+                      name="groupId"
+                      value={g.id}
+                      style={styles.menuItem}
+                      primaryText={g.name}
+                    />
+                  ))}
+                </FormsySelect>
 
                 <FormsyText
                   hintText="Rewards"

@@ -31,9 +31,23 @@ import { loadCustomers, deleteCustomer } from "../actions/customer";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import Drawer from "material-ui/Drawer";
-import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
+
+const groups = [
+  {
+    id: 0,
+    name: 'Маркетолог'
+  },
+  {
+    id: 1,
+    name: 'Оператор'
+  },
+  {
+    id: 2,
+    name: 'Руководитель'
+  }
+]
 
 class CustomerListPage extends React.Component {
   constructor(props) {
@@ -74,8 +88,6 @@ class CustomerListPage extends React.Component {
     if (this.props.customerList || this.props.customerList.length < 1)
       props.getAllCustomers(this.state.search);
   }
-
-  componentWillMount() { }
 
   /* eslint-disable */
   componentDidUpdate(prevProps, prevState) {
@@ -210,7 +222,7 @@ class CustomerListPage extends React.Component {
           width: "10%"
         },
         name: {
-          width: "40%"
+          width: "20%"
         },
         price: {
           width: "20%"
@@ -248,12 +260,12 @@ class CustomerListPage extends React.Component {
 
     return (
       <PageBase
-        title={"Customers (" + customerList.length + ")"}
-        navigation="React CRM / Customer"
+        title={"Сотрудники (" + customerList.length + ")"}
+        navigation="CRM / Сотрудники"
       >
         <div>
           <div>
-            <Link to="/customer">
+            {/*<Link to="/customer">
               <FloatingActionButton
                 backgroundColor="lightblue"
                 secondary={true}
@@ -270,7 +282,7 @@ class CustomerListPage extends React.Component {
               onTouchTap={this.handleToggle}
             >
               <Search />
-            </FloatingActionButton>
+            </FloatingActionButton>*/}
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
@@ -295,19 +307,19 @@ class CustomerListPage extends React.Component {
               <TableRow>
                 <TableHeaderColumn style={styles.columns.name} />
                 <TableHeaderColumn style={styles.columns.name}>
-                  First Name
+                  Имя
                 </TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.name}>
-                  Last Name
+                  Фамилия
                 </TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.price}>
-                  Rewards
+                  KPI
                 </TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.category}>
-                  Membership
+                  Группа пользователя
                 </TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.edit}>
-                  Edit
+
                 </TableHeaderColumn>
               </TableRow>
             </TableHeader>
@@ -332,7 +344,7 @@ class CustomerListPage extends React.Component {
                     {item.rewards}
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.category}>
-                    {item.membership ? <CheckCircle /> : <Cancel />}
+                    {groups[item.group].name}
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
                     <Link className="button" to={"/customer/" + item.id}>
@@ -347,21 +359,12 @@ class CustomerListPage extends React.Component {
                       </FloatingActionButton>
                     </Link>
 
-                    <FloatingActionButton
-                      zDepth={0}
-                      mini={true}
-                      backgroundColor={grey200}
-                      iconStyle={styles.deleteButton}
-                      onTouchTap={() => this.onDelete(item.id)}
-                    >
-                      <ActionDelete />
-                    </FloatingActionButton>
                   </TableRowColumn>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <div className={"row center-xs"}>
+          {/*<div className={"row center-xs"}>
             <div className={"col-xs-6"}>
               <div className={"box"}>
                 <Pagination
@@ -371,8 +374,8 @@ class CustomerListPage extends React.Component {
               </div>
             </div>
           </div>
-
-          <Dialog
+*/}
+          {/*<Dialog
             title="Confirm Dialog "
             actions={actions}
             modal={true}
@@ -380,41 +383,7 @@ class CustomerListPage extends React.Component {
             open={this.state.open}
           >
             {this.state.dialogText}
-          </Dialog>
-
-          <Drawer
-            width={300}
-            openSecondary={true}
-            open={this.state.searchOpen}
-            containerStyle={styles.drawer}
-          >
-            {/*<AppBar title="AppBar" />*/}
-            <RaisedButton
-              label="Search"
-              style={styles.saveButton}
-              type="button"
-              onClick={this.handleSearch}
-              secondary={true}
-            />
-
-            <TextField
-              hintText="First Name"
-              floatingLabelText="First Name"
-              name="firstName"
-              fullWidth={true}
-              value={this.state.search.firstName}
-              onChange={this.handleSearchFilter}
-            />
-
-            <TextField
-              hintText="Last Name"
-              floatingLabelText="Last Name"
-              fullWidth={true}
-              name="lastName"
-              value={this.state.search.lastName}
-              onChange={this.handleSearchFilter}
-            />
-          </Drawer>
+          </Dialog>*/}
         </div>
       </PageBase>
     );

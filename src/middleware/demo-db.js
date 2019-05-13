@@ -7,6 +7,7 @@ export default {
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 21,
+    group: 0,
     'id': 2,
     'firstName': 'Елена',
     'lastName': 'Кузнецова',
@@ -28,11 +29,12 @@ export default {
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 89,
+    group: 1,
     'id': 4,
     'firstName': 'Юлия',
     'lastName': 'Бобылёва',
     'email': 'test@test.com',
-    'avatar': '/assets/img/avatar4.png',
+    'avatar': '/assets/img/avatar3.png',
     worktime: [
       {
         title: 'Рабочее время 1',
@@ -49,116 +51,12 @@ export default {
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 38,
+    group: 2,
     'id': 5,
     'firstName': 'Тимофей',
     'lastName': 'Уваров',
     'email': 'test@test.com',
-    'avatar': '/assets/img/avatar2.png',
-    worktime: [
-      {
-        title: 'Рабочее время 1',
-        start_time: '2019-05-12T08:05:19.933Z',
-        end_time: '2019-05-12T12:05:19.933Z',
-      },
-      {
-        title: 'Рабочее время 2',
-        start_time: '2019-05-12T13:05:19.933Z',
-        end_time: '2019-05-12T17:05:19.933Z',
-      }
-    ]
-  }, {
-    'membership': false,
-    'mobile': '555-555-555',
-    'rewards': 23,
-    'id': 6,
-    'firstName': 'Римма',
-    'lastName': 'Моисеева',
-    'email': 'test@test.com',
     'avatar': '/assets/img/avatar1.png',
-    worktime: [
-      {
-        title: 'Рабочее время 1',
-        start_time: '2019-05-12T08:05:19.933Z',
-        end_time: '2019-05-12T12:05:19.933Z',
-      },
-      {
-        title: 'Рабочее время 2',
-        start_time: '2019-05-12T13:05:19.933Z',
-        end_time: '2019-05-12T17:05:19.933Z',
-      }
-    ]
-  }, {
-    'membership': true,
-    'mobile': '555-555-555',
-    'rewards': 23,
-    'id': 8,
-    'firstName': 'Александра',
-    'lastName': 'Маркова',
-    'email': 'test@test.com',
-    'avatar': '/assets/img/avatar5.png',
-    worktime: [
-      {
-        title: 'Рабочее время 1',
-        start_time: '2019-05-12T08:05:19.933Z',
-        end_time: '2019-05-12T12:05:19.933Z',
-      },
-      {
-        title: 'Рабочее время 2',
-        start_time: '2019-05-12T13:05:19.933Z',
-        end_time: '2019-05-12T17:05:19.933Z',
-      }
-    ]
-  }, {
-    'membership': true,
-    'mobile': '555-555-555',
-    'rewards': 26,
-    'id': 9,
-    'firstName': 'Валерия',
-    'lastName': 'Цветкова',
-    'email': 'test@test.com',
-    'avatar': '/assets/img/avatar1.png',
-    worktime: [
-      {
-        title: 'Рабочее время 1',
-        start_time: '2019-05-12T08:05:19.933Z',
-        end_time: '2019-05-12T12:05:19.933Z',
-      },
-      {
-        title: 'Рабочее время 2',
-        start_time: '2019-05-12T13:05:19.933Z',
-        end_time: '2019-05-12T17:05:19.933Z',
-      }
-    ]
-  }, {
-    'membership': false,
-    'mobile': '555-555-555',
-    'rewards': 27,
-    'id': 12,
-    'firstName': 'Ярослав',
-    'lastName': 'Пахомов',
-    'email': 'test@test.com',
-    'avatar': '/assets/img/avatar1.png',
-    worktime: [
-      {
-        title: 'Рабочее время 1',
-        start_time: '2019-05-12T08:05:19.933Z',
-        end_time: '2019-05-12T12:05:19.933Z',
-      },
-      {
-        title: 'Рабочее время 2',
-        start_time: '2019-05-12T13:05:19.933Z',
-        end_time: '2019-05-12T17:05:19.933Z',
-      }
-    ]
-  }, {
-    'membership': true,
-    'firstName': 'Игорь',
-    'lastName': 'Григорьев',
-    'mobile': '555-555-555',
-    'rewards': 88,
-    'email': 'john.doe@test.com',
-    'avatar': '/assets/img/avatar1.png',
-    'id': 13,
     worktime: [
       {
         title: 'Рабочее время 1',
