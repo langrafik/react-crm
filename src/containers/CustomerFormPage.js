@@ -27,6 +27,9 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentCreate from 'material-ui/svg-icons/content/create'
 import globalStyles from '../styles'
 
+import Paper from 'material-ui/Paper'
+import { Tabs, Tab } from 'material-ui/Tabs'
+
 const groups = [
   {
     id: 0,
@@ -67,14 +70,14 @@ class CustomerFormPage extends React.Component {
     autoBind(this)
     this.state = {
       isFetching: this.props.routeParams.id ? true : false,
-      customer: {}
+      customer: {},
+      tabIndex: 0,
+      totalKpi: null
     }
 
     this.handleGroupChange = this.handleGroupChange.bind(this)
-    // this.handleClick = this.handleClick.bind(this);
-    // this.enableButton = this.enableButton.bind(this);
-    // this.notifyFormError = this.notifyFormError.bind(this);
-    // this.disableButton = this.disableButton.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this)
+    this.handleCalculateClick = this.handleCalculateClick.bind(this)
   }
 
   componentWillMount () {
@@ -111,10 +114,26 @@ class CustomerFormPage extends React.Component {
     }
   }
 
+  handleTabChange (event, value) {
+    this.setState({tabIndex: value})
+  }
+
   handleGroupChange (event, value) {
     let customer = Object.assign({}, this.state.customer)
     customer['group'] = value
     this.setState({customer: customer})
+  }
+
+  handleCalculateClick () {
+    let customer = this.state.customer
+
+    let kpi1 = customer.kpiWeight1 * (customer.Vzak / customer.Nzak)
+    let kpi2 = customer.kpiWeight2 * (customer.CP / customer.CPplan)
+    let kpi3 = customer.kpiWeight3 * (customer.CustomerGoods / customer.CompanyGoods)
+
+    let totalKpi = (kpi1 + kpi2 + kpi3) / 3
+
+    this.setState({totalKpi})
   }
 
   enableButton () {
@@ -142,7 +161,7 @@ class CustomerFormPage extends React.Component {
   render () {
     const {errorMessage} = this.props
 
-    const {isFetching, customer} = this.state
+    const {isFetching, customer, totalKpi} = this.state
 
     const styles = {
       toggleDiv: {
@@ -180,8 +199,8 @@ class CustomerFormPage extends React.Component {
             <GridList cellHeight={230}>
               <GridTile>
                 <FormsyText
-                  hintText='First Name'
-                  floatingLabelText='First Name'
+                  hintText='Имя'
+                  floatingLabelText='Имя'
                   name='firstName'
                   onChange={this.handleChange}
                   fullWidth={true}
@@ -194,8 +213,8 @@ class CustomerFormPage extends React.Component {
                 />
 
                 <FormsyText
-                  hintText='Last Name'
-                  floatingLabelText='Last Name'
+                  hintText='Фамилия'
+                  floatingLabelText='Фамилия'
                   fullWidth={true}
                   name='lastName'
                   onChange={this.handleChange}
@@ -238,279 +257,532 @@ class CustomerFormPage extends React.Component {
 
             <Divider/>
 
-            <div className='customer-page'>
-              <h3 style={globalStyles.title} className='customertitle'>Показатели</h3>
 
-              <div className='item-a'>
-                First Call Resolution
-              </div>
-              <div className='grid'>
-
-
-                <div className='col'>
-                  <div style={{marginTop: '40px'}}> Количество проблем клиентов</div>
-                </div>
-                <div className='col'>
-                  <FormsyText
-                    floatingLabelText='проблемы'
-                    fullWidth={true}
-                    type='number'
-                    name='clientProblems'
-                    onChange={this.handleChange}
-                    value={customer.clientProblems}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
-                <div className='col'>
-
-                </div>
-
-                <div className='col'>
-                  <div style={{marginTop: '40px'}}> Общее количество решенных проблем клиентов</div>
-                </div>
-                <div className='col'>
-                  <FormsyText
-                    floatingLabelText='проблемы'
-                    fullWidth={true}
-                    type='number'
-                    name='allClientProblems'
-                    onChange={this.handleChange}
-                    value={customer.allClientProblems}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
-                <div className='col'>
-                </div>
+            <Paper className='root-tab'>
+              <Tabs
+                value={this.state.value}
+                onChange={this.handleTabChange}
+                indicatorColor='primary'
+                textColor='primary'
+                centered
+              >
+                <Tab label='Показатели'>
+                  <div className='customer-page'>
+                    <div className='item-a'>
+                      First Call Resolution
+                    </div>
+                    <div className='grid-3-col'>
 
 
-                <div className='col'/>
-                <div className='col'>
-                  <FormsyText
-                    hintText=''
-                    floatingLabelText='Итог'
-                    fullWidth={true}
-                    type='number'
-                    name='summary'
-                    onChange={this.handleChange}
-                    value={customer.summary}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                      <div className='col'>
+                        <div style={{marginTop: '40px'}}> Количество проблем клиентов</div>
+                      </div>
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='проблемы'
+                          fullWidth={true}
+                          type='number'
+                          name='clientProblems'
+                          onChange={this.handleChange}
+                          value={customer.clientProblems}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                      <div className='col'>
 
-                <div className='col'>
-                  <FormsyText
-                    hintText='%'
-                    floatingLabelText='Вес KPI %'
-                    fullWidth={true}
-                    type='number'
-                    name='kpiWeight'
-                    onChange={this.handleChange}
-                    value={customer.kpiWeight}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                      </div>
 
-              </div>
-
-
-              <div className='item-a'>
-                Average time in queue
-              </div>
-              <div className='grid'>
-
-
-                <div className='col'>
-                  <div style={{marginTop: '40px'}}> Общее время ожидания клиента в очереди звонков</div>
-                </div>
-                <div className='col'>
-                  <FormsyText
-                    floatingLabelText='время (сек)'
-                    fullWidth={true}
-                    type='number'
-                    name='clientProblemsTime'
-                    onChange={this.handleChange}
-                    value={customer.clientProblemsTime}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
-                <div className='col'>
-
-                </div>
-
-                <div className='col'>
-                  <div style={{marginTop: '40px'}}> Общее количество отвеченных оператором звонков</div>
-                </div>
-                <div className='col'>
-                  <FormsyText
-                    floatingLabelText='кол-во'
-                    fullWidth={true}
-                    type='number'
-                    name='allClientCalls'
-                    onChange={this.handleChange}
-                    value={customer.allClientCalls}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
-                <div className='col'>
-                </div>
+                      <div className='col'>
+                        <div style={{marginTop: '40px'}}> Общее количество решенных проблем клиентов</div>
+                      </div>
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='проблемы'
+                          fullWidth={true}
+                          type='number'
+                          name='allClientProblems'
+                          onChange={this.handleChange}
+                          value={customer.allClientProblems}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                      <div className='col'>
+                      </div>
 
 
-                <div className='col'/>
-                <div className='col'>
-                  <FormsyText
-                    hintText=''
-                    floatingLabelText='Итог'
-                    fullWidth={true}
-                    type='number'
-                    name='summary'
-                    onChange={this.handleChange}
-                    value={customer.summary}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                      <div className='col'/>
+                      <div className='col'>
+                        <FormsyText
+                          hintText=''
+                          floatingLabelText='Итог'
+                          fullWidth={true}
+                          type='number'
+                          name='summary'
+                          onChange={this.handleChange}
+                          value={customer.summary}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
 
-                <div className='col'>
-                  <FormsyText
-                    hintText='%'
-                    floatingLabelText='Вес KPI %'
-                    fullWidth={true}
-                    type='number'
-                    name='kpiWeight'
-                    onChange={this.handleChange}
-                    value={customer.kpiWeight}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                      <div className='col'>
+                        <FormsyText
+                          hintText='%'
+                          floatingLabelText='Вес KPI %'
+                          fullWidth={true}
+                          type='number'
+                          name='kpiWeight'
+                          onChange={this.handleChange}
+                          value={customer.kpiWeight}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
 
-              </div>
-            </div>
-
-            <div className='customer-page'>
-              <h3 style={globalStyles.title} className='customertitle'>Зарплата</h3>
-
-              <div className='grid'>
-                <div className='col'>
-                  <FormsyText
-                    floatingLabelText='руб'
-                    fullWidth={true}
-                    type='number'
-                    name='payment'
-                    onChange={this.handleChange}
-                    value={customer.payment}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
-                <div className='col'>
-                  <div style={{marginTop: '40px', fontSize: '50px'}}> * </div>
-                </div>
-                <div className='col'>
-                  <FormsyText
-                    hintText=''
-                    floatingLabelText='KPI ФАКТ'
-                    fullWidth={true}
-                    type='number'
-                    name='factKpi'
-                    onChange={this.handleChange}
-                    value={customer.factKpi}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                    </div>
 
 
-                <div className='col'/>
-                <div className='col'/>
-                <div className='col'>
-                  <FormsyText
-                    hintText=''
-                    floatingLabelText='Итог'
-                    fullWidth={true}
-                    type='number'
-                    name='summary'
-                    onChange={this.handleChange}
-                    value={customer.summary}
-                    validations={{
-                      isInt: true
-                    }}
-                    validationErrors={{
-                      isInt: 'Введите валидное число',
-                    }}
-                    required
-                    positive
-                  />
-                </div>
+                    <div className='item-a'>
+                      Average time in queue
+                    </div>
+                    <div className='grid'>
 
-              </div>
-            </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px'}}> Общее время ожидания клиента в очереди звонков</div>
+                      </div>
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='время (сек)'
+                          fullWidth={true}
+                          type='number'
+                          name='clientProblemsTime'
+                          onChange={this.handleChange}
+                          value={customer.clientProblemsTime}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                      <div className='col'>
+
+                      </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px'}}> Общее количество отвеченных оператором звонков</div>
+                      </div>
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='кол-во'
+                          fullWidth={true}
+                          type='number'
+                          name='allClientCalls'
+                          onChange={this.handleChange}
+                          value={customer.allClientCalls}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                      <div className='col'>
+                      </div>
+
+
+                      <div className='col'/>
+                      <div className='col'>
+                        <FormsyText
+                          hintText=''
+                          floatingLabelText='Итог'
+                          fullWidth={true}
+                          type='number'
+                          name='summary'
+                          onChange={this.handleChange}
+                          value={customer.summary}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='%'
+                          floatingLabelText='Вес KPI %'
+                          fullWidth={true}
+                          type='number'
+                          name='kpiWeight'
+                          onChange={this.handleChange}
+                          value={customer.kpiWeight1}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                    </div>
+                  </div>
+                </Tab>
+
+                <Tab label='KPI'>
+                  <div className='customer-page'>
+
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi'>
+                        KPI
+                      </div>
+
+                      <div className='item-a fact'>
+                        ФАКТ
+                      </div>
+                    </div>
+
+                    <div className='grid-5-col'>
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 1</div>
+                      </div>
+                      <div className='col'>
+                        <div className='col'>
+                          <FormsyText
+                            hintText='%'
+                            floatingLabelText='Вес KPI %'
+                            fullWidth={true}
+                            type='number'
+                            name='kpiWeight1'
+                            onChange={this.handleChange}
+                            value={customer.kpiWeight}
+                            validations={{
+                              isInt: true
+                            }}
+                            validationErrors={{
+                              isInt: 'Введите валидное число',
+                            }}
+                            required
+                            positive
+                          />
+                        </div>
+                      </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>Средний объем заказа</div>
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='Объем заказов'
+                          floatingLabelText='Объем заказов'
+                          fullWidth={true}
+                          type='number'
+                          name='Vzak'
+                          onChange={this.handleChange}
+                          value={customer.Vzak}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='Количество заявок'
+                          floatingLabelText='Количество заявок'
+                          fullWidth={true}
+                          type='number'
+                          name='Nzak'
+                          onChange={this.handleChange}
+                          value={customer.Nzak}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-5-col'>
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 2</div>
+                      </div>
+                      <div className='col'>
+                        <div className='col'>
+                          <FormsyText
+                            hintText='%'
+                            floatingLabelText='Вес KPI %'
+                            fullWidth={true}
+                            type='number'
+                            name='kpiWeight2'
+                            onChange={this.handleChange}
+                            value={customer.kpiWeight2}
+                            validations={{
+                              isInt: true
+                            }}
+                            validationErrors={{
+                              isInt: 'Введите валидное число',
+                            }}
+                            required
+                            positive
+                          />
+                        </div>
+                      </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>Коэффициент выполнения целевых показателей</div>
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='Целевые показатели'
+                          floatingLabelText='Целевые показатели'
+                          fullWidth={true}
+                          type='number'
+                          name='CP'
+                          onChange={this.handleChange}
+                          value={customer.CP}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='Общее число ЦП'
+                          fullWidth={true}
+                          type='number'
+                          name='CPplan'
+                          onChange={this.handleChange}
+                          value={customer.CPplan}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-5-col'>
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 3</div>
+                      </div>
+                      <div className='col'>
+                        <div className='col'>
+                          <FormsyText
+                            floatingLabelText='Вес KPI %'
+                            fullWidth={true}
+                            type='number'
+                            name='kpiWeight3'
+                            onChange={this.handleChange}
+                            value={customer.kpiWeight3}
+                            validations={{
+                              isInt: true
+                            }}
+                            validationErrors={{
+                              isInt: 'Введите валидное число',
+                            }}
+                            required
+                            positive
+                          />
+                        </div>
+                      </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>Количество товарных позиций</div>
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='Кол-во позиций у сотрудника'
+                          fullWidth={true}
+                          type='number'
+                          name='CustomerGoods'
+                          onChange={this.handleChange}
+                          value={customer.CustomerGoods}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='В компании'
+                          fullWidth={true}
+                          type='number'
+                          name='CompanyGoods'
+                          onChange={this.handleChange}
+                          value={customer.CompanyGoods}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>
+
+                    <RaisedButton
+                      label='Рассчитать'
+                      type='button'
+                      style={{
+                        margin: '10 500'
+                      }}
+                      onClick={() => this.handleCalculateClick(event)}
+                      primary={true}
+                    />
+
+
+                    {totalKpi !== null && <div className="total-kpi">
+                      Сотрудник эффективен на {totalKpi.toFixed(2)} %
+                    </div>}
+
+                  </div>
+
+
+
+                </Tab>
+                <Tab label='Зарплата'>
+                  <div className='customer-page'>
+                    <div className='grid-3-col'>
+                      <div className='col'>
+                        <FormsyText
+                          floatingLabelText='руб'
+                          fullWidth={true}
+                          type='number'
+                          name='payment'
+                          onChange={this.handleChange}
+                          value={customer.payment}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '50px'}}> *</div>
+                      </div>
+                      <div className='col'>
+                        <FormsyText
+                          hintText=''
+                          floatingLabelText='KPI ФАКТ'
+                          fullWidth={true}
+                          type='number'
+                          name='factKpi'
+                          onChange={this.handleChange}
+                          value={customer.factKpi}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+
+                      <div className='col'/>
+                      <div className='col'/>
+                      <div className='col'>
+                        <FormsyText
+                          hintText=''
+                          floatingLabelText='Итог'
+                          fullWidth={true}
+                          type='number'
+                          name='summary'
+                          onChange={this.handleChange}
+                          value={customer.summary}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                    </div>
+                  </div>
+                </Tab>
+              </Tabs>
+            </Paper>
 
             <div style={styles.buttons}>
               <Link to='/customers'>

@@ -90,7 +90,12 @@ a:hover {
   font-weight: 700;
 }
 
-.grid {
+.grid-2-col {
+  grid-template-columns: auto auto;
+  justify-content: center;
+}
+
+.grid-3-col, .grid-5-col, .grid-2-col {
   display: inline-grid;
   width: 100%;
   padding: 10px;
@@ -98,11 +103,10 @@ a:hover {
   justify-items: stretch;
   grid-template-columns: 500px auto auto;
   margin-bottom: 30px;
+}
 
-  .col {
-  }
-
-
+.grid-5-col {
+  grid-template-columns: auto 100px 600px auto auto;
 }
 
 .cell-row {
@@ -121,5 +125,12 @@ a:hover {
   background-color: rgba(178, 227, 240, 0.32);
 }
 
+.root-tab {
+  flex-grow: 1
+}
 
-
+.total-kpi {
+  margin: 20px;
+  color: green;
+  font-size: 30px;
+}
