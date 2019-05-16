@@ -341,7 +341,7 @@ class CustomerListPage extends React.Component {
                     {item.lastName}
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.price}>
-                    {item.totalKpi}
+                    {item.rewards}
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.category}>
                     {groups[item.group].name}

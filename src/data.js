@@ -1,7 +1,7 @@
 import React from "react";
 import Assessment from "material-ui/svg-icons/action/assessment";
 import GridOn from "material-ui/svg-icons/image/grid-on";
-import CalendarIcon from "material-ui/svg-icons/action/perm-contact-calendar";
+import CalendarIcon from "material-ui/svg-icons/action/date-range";
 import PermIdentity from "material-ui/svg-icons/action/perm-identity";
 import SettingsPower from "material-ui/svg-icons/action/settings-power";
 import VpnKey from "material-ui/svg-icons/communication/vpn-key";
@@ -9,6 +9,8 @@ import { cyan600, pink600, purple600 } from "material-ui/styles/colors";
 import ExpandLess from "material-ui/svg-icons/navigation/expand-less";
 import ExpandMore from "material-ui/svg-icons/navigation/expand-more";
 import ChevronRight from "material-ui/svg-icons/navigation/chevron-right";
+import Money from "material-ui/svg-icons/editor/attach-money"
+
 import db from './middleware/demo-db'
 
 let ds = ds || Object.assign({}, db)
@@ -25,7 +27,7 @@ ds.customers.map((c) => {
 const data = {
   menus: [
     { text: "Главное", icon: <Assessment />, link: "/dashboard" },
-    { text: "Заказы", icon: <GridOn />, link: "/orders" },
+    { text: "Сделки", icon: <Money />, link: "/orders" },
     { text: "Календарь", icon: <CalendarIcon />, link: "/calendar" },
     { text: "Сотрудники", icon: <PermIdentity />, link: "/customers" },
     { text: "Продукты", icon: <GridOn />, link: "/products" },

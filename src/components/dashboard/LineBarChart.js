@@ -79,9 +79,11 @@ class LineBarChart extends React.Component {
                   <XAxis type="number"/>
                   <YAxis dataKey="firstName" type="category"/>
                   <Tooltip/>
-                  <Legend/>
+                  <Legend />
                   <CartesianGrid stroke="#f5f5f5"/>
-                  <Bar dataKey="totalKpi" barSize={20} fill="#413ea0"/>
+
+                  <Area name="KPI сотрудника" dataKey="totalKpi" fill="#ff7300" stroke="#ff7300" />
+                  <Bar name="Принесенная прибыль" dataKey="rewards" barSize={20} fill="#413ea0"/>
                 </ComposedChart>
               </ResponsiveContainer>
             </div>

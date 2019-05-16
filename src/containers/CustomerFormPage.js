@@ -29,6 +29,8 @@ import globalStyles from '../styles'
 
 import Paper from 'material-ui/Paper'
 import { Tabs, Tab } from 'material-ui/Tabs'
+import DatePicker from 'material-ui/DatePicker'
+import moment from 'moment'
 
 const groups = [
   {
@@ -133,7 +135,7 @@ class CustomerFormPage extends React.Component {
 
     let totalKpi = (kpi1 + kpi2 + kpi3) / 3
 
-    customer['totalKpi'] = totalKpi;
+    customer['totalKpi'] = totalKpi
 
     this.setState({totalKpi})
   }
@@ -269,7 +271,7 @@ class CustomerFormPage extends React.Component {
                 centered
               >
                 <Tab label='Показатели'>
-                  <div className='customer-page'>
+                  {/*<div className='customer-page'>
                     <div className='item-a'>
                       First Call Resolution
                     </div>
@@ -468,7 +470,110 @@ class CustomerFormPage extends React.Component {
                       </div>
 
                     </div>
+                  </div>*/}
+
+                  <div className='customer-page'>
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi customertitle'>
+                        Количество закрытых сделок сотрудником
+                      </div>
+
+                      <div className=''>
+                        <FormsyText
+                          floatingLabelText='количество'
+                          type='number'
+                          name='closedDeals'
+                          fullWidth
+                          onChange={this.handleChange}
+                          value={customer.closedDeals}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi customertitle'>
+                        Прибыль принесенная сотрудником
+                      </div>
+
+                      <div className=''>
+                        <FormsyText
+                          floatingLabelText='$'
+                          type='number'
+                          name='rewards'
+                          fullWidth
+                          onChange={this.handleChange}
+                          value={customer.rewards}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi customertitle'>
+                        Сумма сделки
+                      </div>
+
+                      <div className=''>
+                        <FormsyText
+                          floatingLabelText='$'
+                          type='number'
+                          name='dealSumm'
+                          fullWidth
+                          onChange={this.handleChange}
+                          value={customer.dealSumm}
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi customertitle'>
+                        Дата сделки
+                      </div>
+
+                      <div className=''>
+                        <DatePicker
+                          defaultDate={new Date(customer.dataSumm)}
+                          floatingLabelText="Дата сделки"
+                          fullWidth={true}
+                          formatDate={(date) => moment(date).format('DD.MM.YYYY')}
+                        />
+                      </div>
+                    </div>
+
+                    <div className='grid-2-col'>
+                      <div className='item-a kpi customertitle'>
+                        Компания заказчик
+                      </div>
+
+                      <div className=''>
+                        <FormsyText
+                          floatingLabelText='Имя компании'
+                          type='text'
+                          name='customerCompanyName'
+                          fullWidth
+                          onChange={this.handleChange}
+                          value={customer.customerCompanyName}
+                        />
+                      </div>
+                    </div>
+
                   </div>
+
                 </Tab>
 
                 <Tab label='KPI'>
@@ -582,7 +687,8 @@ class CustomerFormPage extends React.Component {
                       </div>
 
                       <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>Коэффициент выполнения целевых показателей</div>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>Коэффициент выполнения целевых показателей
+                        </div>
                       </div>
 
                       <div className='col'>
@@ -704,12 +810,11 @@ class CustomerFormPage extends React.Component {
                     />
 
 
-                    {customer.totalKpi !== null && <div className="total-kpi">
+                    {customer.totalKpi !== null && <div className='total-kpi'>
                       Сотрудник эффективен на {customer.totalKpi.toFixed(2)} %
                     </div>}
 
                   </div>
-
 
 
                 </Tab>

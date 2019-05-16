@@ -4,6 +4,12 @@ export default {
     'user': {'firstName': 'Иван', 'lastName': 'Иванович', 'email': 'admin@test.com', 'password': 'password'}
   },
   'customers': [{
+    closedDeals: 1,
+    dealSumm: 9.99,
+    dataSumm: '2019-05-12T08:05:19.933Z',
+    customerCompanyName: 'order-6-6-1-2',
+
+
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 21,
@@ -19,9 +25,9 @@ export default {
     summary: 100,
     payment: 25000,
     factKpi: 85,
-    totalKpi: 16,
+    totalKpi: 18,
 
-    kpiWeight1: 20,
+    kpiWeight1: 30,
     kpiWeight2: 20,
     kpiWeight3: 20,
 
@@ -48,6 +54,14 @@ export default {
       }
     ]
   }, {
+
+    closedDeals: 12,
+    dealSumm: 19.99,
+    dataSumm: '2019-05-14T08:05:19.933Z',
+    customerCompanyName: 'order-6-6-12-3',
+
+
+
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 89,
@@ -88,6 +102,11 @@ export default {
       }
     ]
   }, {
+    closedDeals: 4,
+    dealSumm: 5.49,
+    dataSumm: '2019-05-13T08:05:19.933Z',
+    customerCompanyName: 'order-6-4-12-3',
+
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 38,
@@ -98,11 +117,11 @@ export default {
     clientProblems: 100,
     allClientCalls: 100,
     payment: 25000,
-    totalKpi: 16,
+    totalKpi: 26,
 
     kpiWeight1: 20,
     kpiWeight2: 20,
-    kpiWeight3: 20,
+    kpiWeight3: 50,
 
     Vzak: 80,
     Nzak: 100,

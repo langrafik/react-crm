@@ -34,7 +34,7 @@ const DashboardPage = () => {
         </div>
 
         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 ">
-          <InfoBox Icon={ThumbUp} color={cyan600} title="Количество выполненных задач" value="4231" />
+          <InfoBox Icon={ThumbUp} color={cyan600} title="Выполненные задачи" value="4231" />
         </div>
 
         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 ">
