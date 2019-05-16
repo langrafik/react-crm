@@ -87,6 +87,11 @@ function callApi(endpoint, authenticated, method, data) {
       const model = getModel(action)
       const idx = ds[model].findIndex(d => d.id === data.id)
       let result = ds[model][idx] = Object.assign({}, data)
+
+      if (model === 'customers') {
+        localStorage.setItem(result.id, JSON.stringify(result))
+      }
+
       setTimeout(resolve, 200, JSON.stringify(result))
     })
   }

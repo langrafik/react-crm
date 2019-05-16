@@ -13,6 +13,9 @@ import {
 } from "recharts";
 import Paper from "material-ui/Paper";
 import GlobalStyles from "../../styles";
+import { addCustomer, getCustomer, loadCustomers, newCustomer, updateCustomer } from '../../actions/customer'
+import { connect } from 'react-redux'
+import autoBind from 'react-autobind'
 
 // const {PropTypes} = React;
 // const {ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
@@ -25,57 +28,90 @@ import GlobalStyles from "../../styles";
 
 // const LineBarAreaComposedChart = React.createClass({
 // render () {
-const LineBarChart = props => {
-  const styles = {
-    paper: {
-      minHeight: 344,
-      padding: 10
-    },
-    legend: {
-      paddingTop: 20
-    },
-    pieChartDiv: {
-      height: 290,
-      textAlign: "center"
-    }
-  };
+const styles = {
+  paper: {
+    minHeight: 344,
+    padding: 10
+  },
+  legend: {
+    paddingTop: 20
+  },
+  pieChartDiv: {
+    height: 290,
+    textAlign: "center"
+  }
+};
 
-  return (
-    <Paper style={styles.paper}>
-      <span style={GlobalStyles.title}>Website Analysis</span>
+class LineBarChart extends React.Component {
+  constructor (props) {
+    super(props);
+    autoBind(this);
+    this.state = {
+    };
+  }
 
-      <div style={GlobalStyles.clear} />
+  componentWillMount () {
+    this.props.getAllCustomers && this.props.getAllCustomers();
+  }
 
-      <div className="row">
-        <div className="col-xs-12">
-          <div style={styles.pieChartDiv}>
-            <ResponsiveContainer>
-              <ComposedChart
-                layout="vertical"
-                width={600}
-                height={320}
-                data={props.data}
-                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-              >
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Area dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-                <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-                <Line dataKey="uv" stroke="#ff7300" />
-              </ComposedChart>
-            </ResponsiveContainer>
+  render () {
+    const {customerList} = this.props
+
+    const {isFetching, customer, totalKpi} = this.state
+
+    return (
+      <Paper style={styles.paper}>
+        <span style={GlobalStyles.title}>Рейтинг сотрудников</span>
+
+        <div style={GlobalStyles.clear}/>
+
+        <div className="row">
+          <div className="col-xs-12">
+            <div style={styles.pieChartDiv}>
+              <ResponsiveContainer>
+                <ComposedChart
+                  layout="vertical"
+                  width={600}
+                  height={320}
+                  data={customerList}
+                  margin={{top: 20, right: 20, bottom: 20, left: 20}}
+                >
+                  <XAxis type="number"/>
+                  <YAxis dataKey="firstName" type="category"/>
+                  <Tooltip/>
+                  <Legend/>
+                  <CartesianGrid stroke="#f5f5f5"/>
+                  <Bar dataKey="totalKpi" barSize={20} fill="#413ea0"/>
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
-      </div>
-    </Paper>
-  );
-};
+      </Paper>
+    )
+  }
+}
 
 LineBarChart.propTypes = {
-  data: PropTypes.array
+  customerList: PropTypes.array
 };
 
-export default LineBarChart;
+
+function mapStateToProps(state) {
+  const { customerReducer } = state;
+  const {
+    customerList
+  } = customerReducer;
+
+  return {
+    customerList
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    getAllCustomers: () => dispatch(loadCustomers())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LineBarChart)

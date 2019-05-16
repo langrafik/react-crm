@@ -133,6 +133,8 @@ class CustomerFormPage extends React.Component {
 
     let totalKpi = (kpi1 + kpi2 + kpi3) / 3
 
+    customer['totalKpi'] = totalKpi;
+
     this.setState({totalKpi})
   }
 
@@ -484,7 +486,7 @@ class CustomerFormPage extends React.Component {
 
                     <div className='grid-5-col'>
                       <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 1</div>
+                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 1</div>
                       </div>
                       <div className='col'>
                         <div className='col'>
@@ -495,7 +497,7 @@ class CustomerFormPage extends React.Component {
                             type='number'
                             name='kpiWeight1'
                             onChange={this.handleChange}
-                            value={customer.kpiWeight}
+                            value={customer.kpiWeight1}
                             validations={{
                               isInt: true
                             }}
@@ -555,7 +557,7 @@ class CustomerFormPage extends React.Component {
 
                     <div className='grid-5-col'>
                       <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 2</div>
+                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 2</div>
                       </div>
                       <div className='col'>
                         <div className='col'>
@@ -625,7 +627,7 @@ class CustomerFormPage extends React.Component {
 
                     <div className='grid-5-col'>
                       <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>KPI 3</div>
+                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 3</div>
                       </div>
                       <div className='col'>
                         <div className='col'>
@@ -702,8 +704,8 @@ class CustomerFormPage extends React.Component {
                     />
 
 
-                    {totalKpi !== null && <div className="total-kpi">
-                      Сотрудник эффективен на {totalKpi.toFixed(2)} %
+                    {customer.totalKpi !== null && <div className="total-kpi">
+                      Сотрудник эффективен на {customer.totalKpi.toFixed(2)} %
                     </div>}
 
                   </div>
@@ -795,7 +797,6 @@ class CustomerFormPage extends React.Component {
                 type='button'
                 onClick={() => this.handleClick(event)}
                 primary={true}
-                disabled={!this.state.canSubmit}
               />
             </div>
             {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}

@@ -25,7 +25,7 @@ const NewOrders = props => {
 
   return (
     <Paper style={styles.paper}>
-      <div style={{ ...styles.header }}>New Orders</div>
+      <div style={{ ...styles.header }}>Закрытые сделки по дням</div>
       <div style={styles.div}>
         <ResponsiveContainer>
           <LineChart data={props.data}>

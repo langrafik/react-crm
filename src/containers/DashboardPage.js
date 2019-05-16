@@ -28,20 +28,20 @@ const DashboardPage = () => {
           <InfoBox
             Icon={ShoppingCart}
             color={pink600}
-            title="Total Profit"
+            title="Прибыль"
             value="1500k"
           />
         </div>
 
         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 ">
-          <InfoBox Icon={ThumbUp} color={cyan600} title="Likes" value="4231" />
+          <InfoBox Icon={ThumbUp} color={cyan600} title="Количество выполненных задач" value="4231" />
         </div>
 
         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 ">
           <InfoBox
             Icon={Assessment}
             color={purple600}
-            title="Sales"
+            title="Количество сделок"
             value="460"
           />
         </div>
@@ -50,7 +50,7 @@ const DashboardPage = () => {
           <InfoBox
             Icon={Face}
             color={orange600}
-            title="New Members"
+            title="Количество клиентов"
             value="248"
           />
         </div>

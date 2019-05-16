@@ -19,6 +19,7 @@ export default {
     summary: 100,
     payment: 25000,
     factKpi: 85,
+    totalKpi: 16,
 
     kpiWeight1: 20,
     kpiWeight2: 20,
@@ -58,8 +59,12 @@ export default {
     clientProblems: 100,
     allClientProblems: 200,
     payment: 25000,
-    factKpi: 85,
-    summary: 100,
+    totalKpi: 16,
+
+    kpiWeight1: 20,
+    kpiWeight2: 20,
+    kpiWeight3: 20,
+
     Vzak: 80,
     Nzak: 100,
     CP: 6,
@@ -93,9 +98,12 @@ export default {
     clientProblems: 100,
     allClientCalls: 100,
     payment: 25000,
-    kpiWeight: 2,
-    factKpi: 85,
-    summary: 100,
+    totalKpi: 16,
+
+    kpiWeight1: 20,
+    kpiWeight2: 20,
+    kpiWeight3: 20,
+
     Vzak: 80,
     Nzak: 100,
     CP: 6,

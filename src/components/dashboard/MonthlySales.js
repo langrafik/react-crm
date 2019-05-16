@@ -26,7 +26,7 @@ const MonthlySales = props => {
   return (
     <Paper style={styles.paper}>
       <div style={{ ...GlobalStyles.title, ...styles.header }}>
-        Monthly Sales
+        Зыкрытые сделки по месяцам
       </div>
       <div style={styles.div}>
         <ResponsiveContainer>
