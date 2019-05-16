@@ -37,6 +37,35 @@ export default {
     CustomerGoods: 40,
     CompanyGoods: 40,
 
+    tasks: [
+      {
+        id: 1,
+        name: 'Составить базу клиентов',
+        priority: 1,
+        status: 2,
+        start: '20.05.2019',
+        end: '25.05.2019',
+        perc: 30,
+      },
+      {
+        id: 2,
+        name: 'Подготовить анализ конкурентов',
+        priority: 2,
+        status: 0,
+        start: '20.05.2019',
+        end: '25.05.2019',
+        perc: 50,
+      },
+      {
+        id: 3,
+        name: 'Спланировать рекламную компанию',
+        priority: 0,
+        status: 1,
+        start: '20.05.2019',
+        end: '25.05.2019',
+        perc: 100,
+      }
+    ],
 
     allClientCalls: 100,
     'avatar': '/assets/img/avatar3.png',
@@ -162,7 +191,7 @@ export default {
       'unitPrice': 18
     }, {'id': 2, 'productName': 'Product RECZE', 'categoryId': 1, 'unitInStock': null, 'unitPrice': 19}],
     'amount': 9.99,
-    'orderDate': '2017-01-01',
+    'orderDate': '20.05.2019',
     'shippedDate': '2017-01-01',
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }, {
@@ -180,7 +209,7 @@ export default {
       'unitPrice': 18
     }, {'id': 2, 'productName': 'Product RECZE', 'categoryId': 1, 'unitInStock': null, 'unitPrice': 19}],
     'amount': 5.99,
-    'orderDate': '2017-01-01',
+    'orderDate': '21.05.2019',
     'shippedDate': '2017-01-01',
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }, {
@@ -198,7 +227,7 @@ export default {
       'unitPrice': 10
     }, {'id': 4, 'productName': 'Product KSBRM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 22}],
     'amount': 499.99,
-    'orderDate': '2017-01-01',
+    'orderDate': '22.05.2019',
     'shippedDate': '2017-01-01',
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }, {
@@ -210,7 +239,7 @@ export default {
     'customerId': 5,
     'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
     'amount': 399.99,
-    'orderDate': '2017-01-01',
+    'orderDate': '23.05.2019',
     'shippedDate': '2017-01-01',
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }],

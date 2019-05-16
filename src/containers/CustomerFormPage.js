@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
 // import DatePicker from 'material-ui/DatePicker';
-import { green400, grey400 } from 'material-ui/styles/colors'
+import { green400, grey400, grey500, white } from 'material-ui/styles/colors'
 import Divider from 'material-ui/Divider'
 import PageBase from '../components/PageBase'
 
@@ -65,6 +65,75 @@ const kpiWeight = [
     name: '100%'
   }
 ]
+
+const styles = {
+  fab: {
+    // margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+    marginRight: 20
+  },
+  fabSearch: {
+    // margin: 0,
+    top: "auto",
+    right: 100,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+    marginRight: 20,
+    backgroundColor: "lightblue"
+  },
+  editButton: {
+    paddingRight: 25
+  },
+  editButtonIcon: {
+    fill: white
+  },
+  deleteButton: {
+    fill: grey500
+  },
+  columns: {
+    id: {
+      width: "10%"
+    },
+    name: {
+      width: "20%"
+    },
+    price: {
+      width: "20%"
+    },
+    category: {
+      width: "20%"
+    },
+    edit: {
+      width: "20%"
+    }
+  },
+  dialog: {
+    width: "20%",
+    maxWidth: "none"
+  },
+  drawer: {
+    backgroundColor: "lightgrey"
+  }
+};
+
+const priority = {
+  0: 'Низкий',
+  1: 'Нормальный',
+  2: 'Высокий'
+}
+
+
+const statuses = {
+  0: 'Не выполнен',
+  1: 'Выполнен',
+  2: 'В процессе'
+}
+
 
 class CustomerFormPage extends React.Component {
   constructor (props) {
@@ -186,8 +255,10 @@ class CustomerFormPage extends React.Component {
       },
       card: {
         width: 120
+      },
+      columns: {
+        width: '16.7%'
       }
-
     }
     if (isFetching) {
       return <CircularProgress/>
@@ -574,6 +645,68 @@ class CustomerFormPage extends React.Component {
                   </div>
 
                 </Tab>
+
+                <Tab label='Задачи'>
+
+                  <Table
+                  >
+                    <TableHeader
+                    >
+                      <TableRow>
+                        <TableHeaderColumn style={styles.columns}>
+                          Задача
+                        </TableHeaderColumn>
+                        <TableHeaderColumn style={styles.columns}>
+                          Приоритет
+                        </TableHeaderColumn>
+                        <TableHeaderColumn style={styles.columns}>
+                          Статус
+                        </TableHeaderColumn>
+                        <TableHeaderColumn style={styles.columns}>
+                          Старт
+                        </TableHeaderColumn>
+                        <TableHeaderColumn style={styles.columns}>
+                          Конец
+                        </TableHeaderColumn>
+                        <TableHeaderColumn style={styles.columns}>
+                          % выполнения
+                        </TableHeaderColumn>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody
+                      displayRowCheckbox={this.state.showCheckboxes}
+                      deselectOnClickaway={this.state.deselectOnClickaway}
+                      showRowHover={this.state.showRowHover}
+                      stripedRows={this.state.stripedRows}
+                    >
+                      {customer.tasks.map(item => (
+                        <TableRow key={item.id}>
+                          <TableRowColumn style={styles.columns}>
+                            {item.name}
+                          </TableRowColumn>
+                          <TableRowColumn style={styles.columns}>
+                            {priority[item.priority]}
+                          </TableRowColumn>
+                          <TableRowColumn style={styles.columns}>
+                            {statuses[item.status]}
+                          </TableRowColumn>
+                          <TableRowColumn style={styles.columns}>
+                            {moment(item.start, 'DD.MM.YYYY').format('DD.MM.YYYY')}
+                          </TableRowColumn>
+                          <TableRowColumn style={styles.columns}>
+                            {moment(item.end, 'DD.MM.YYYY').format('DD.MM.YYYY')}
+                          </TableRowColumn>
+                          <TableRowColumn style={styles.columns}>
+                            {item.perc}
+                          </TableRowColumn>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+
+
+                </Tab>
+
 
                 <Tab label='KPI'>
                   <div className='customer-page'>
