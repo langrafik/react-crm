@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
+import React, { PropTypes } from "react";
+import { Link } from "react-router";
 import {
   Table,
   TableBody,
@@ -7,14 +7,12 @@ import {
   TableHeaderColumn,
   TableRow,
   TableRowColumn
-} from 'material-ui/Table'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentCreate from 'material-ui/svg-icons/content/create'
-import ActionDelete from 'material-ui/svg-icons/action/delete'
-import ContentAdd from 'material-ui/svg-icons/content/add'
-import Search from 'material-ui/svg-icons/action/search'
-import CheckCircle from 'material-ui/svg-icons/action/check-circle'
-import Cancel from 'material-ui/svg-icons/navigation/cancel'
+} from "material-ui/Table";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import ContentCreate from "material-ui/svg-icons/content/create";
+import ActionDelete from "material-ui/svg-icons/action/delete";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import Search from "material-ui/svg-icons/action/search";
 import {
   teal500,
   pink500,
@@ -22,44 +20,29 @@ import {
   grey500,
   green400,
   white
-} from 'material-ui/styles/colors'
-import PageBase from '../components/PageBase'
+} from "material-ui/styles/colors";
+import PageBase from "../components/PageBase";
 // import Data from '../data';
-import Pagination from '../components/Pagination'
-import { connect } from 'react-redux'
-import { loadCustomers, deleteCustomer } from '../actions/customer'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import Drawer from 'material-ui/Drawer'
-import TextField from 'material-ui/TextField'
-import Snackbar from 'material-ui/Snackbar'
+import Pagination from "../components/Pagination";
+import { connect } from "react-redux";
+import { loadOrders, deleteOrder } from "../actions/order";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import Drawer from "material-ui/Drawer";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+import Snackbar from "material-ui/Snackbar";
 import moment from 'moment'
 
-const groups = [
-  {
-    id: 0,
-    name: 'Маркетолог'
-  },
-  {
-    id: 1,
-    name: 'Оператор'
-  },
-  {
-    id: 2,
-    name: 'Руководитель'
-  }
-]
-
 class OrderListPage extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
       open: false,
       searchOpen: false,
       snackbarOpen: false,
       autoHideDuration: 1500,
-
       fixedHeader: true,
       fixedFooter: true,
       stripedRows: false,
@@ -70,98 +53,40 @@ class OrderListPage extends React.Component {
       deselectOnClickaway: true,
       showCheckboxes: false,
       pageOfItems: [],
-      customerId: null,
-      dialogText: 'Are you sure to do this?',
+      orderId: null,
+      dialogText: "Are you sure to do this?",
       search: {
-        firstName: '',
-        lastName: ''
+        product: ""
       }
-    }
+    };
 
-    this.onChangePage = this.onChangePage.bind(this)
-    this.onDelete = this.onDelete.bind(this)
-    this.handleToggle = this.handleToggle.bind(this)
-    this.handleSearchFilter = this.handleSearchFilter.bind(this)
-    this.handleSearch = this.handleSearch.bind(this)
-    this.handleErrorMessage = this.handleErrorMessage.bind(this)
-    this.handleSnackBarClose = this.handleSnackBarClose.bind(this)
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onDelete = this.onDelete.bind(this);
 
-    if (this.props.customerList || this.props.customerList.length < 1)
-      props.getAllCustomers(this.state.search)
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleSearchFilter = this.handleSearchFilter.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleErrorMessage = this.handleErrorMessage.bind(this);
+    this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
+
+    if (this.props.orderList || this.props.orderList.length < 1)
+      props.getAllOrders(this.state.search);
   }
+
+  componentWillMount() { }
 
   /* eslint-disable */
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // reset page if items array has changed
-    if (this.props.customerList !== prevProps.customerList) {
-      this.onChangePage(this.props.customerList.slice(0, 10))
+    if (this.props.orderList !== prevProps.orderList) {
+      //this.setPage(this.props.initialPage);
+      this.onChangePage(this.props.orderList.slice(0, 10));
     }
   }
 
-  onChangePage (pageOfItems) {
-    if (
-      !this.props.isFetching &&
-      this.state.pageOfItems &&
-      this.props.customerList
-    )
-      this.setState({pageOfItems: pageOfItems})
-  }
-
-  onDelete (id) {
-    if (id) {
-      this.handleOpen(id)
-    }
-  }
-
-  handleToggle () {
-    this.setState({searchOpen: !this.state.searchOpen})
-  }
-
-  handleSearch () {
-    this.setState({searchOpen: !this.state.searchOpen})
-    this.props.getAllCustomers(this.state.search)
-  }
-
-  handleOpen (id) {
-    this.setState({dialogText: 'Are you sure to delete this data?'})
-    this.setState({open: true})
-    this.setState({customerId: id})
-  }
-
-  handleClose (isConfirmed) {
-    this.setState({open: false})
-
-    if (isConfirmed && this.state.customerId) {
-      this.props.deleteCustomer(this.state.customerId)
-      this.setState({customerId: null})
-    }
-  }
-
-  handleSearchFilter (event) {
-    const field = event.target.name
-
-    if (event && event.target && field) {
-      const search = Object.assign({}, this.state.search)
-      search[field] = event.target.value
-      this.setState({search: search})
-    }
-  }
-
-  handleErrorMessage () {
-    this.setState({
-      snackbarOpen: true
-    })
-  }
-
-  handleSnackBarClose () {
-    this.setState({
-      snackbarOpen: false
-    })
-  }
-
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.errorMessage && !nextProps.deleteSuccess) {
-      this.setState({snackbarOpen: true})
+      this.setState({ snackbarOpen: true });
     }
 
     if (
@@ -170,24 +95,79 @@ class OrderListPage extends React.Component {
       !nextProps.errorMessage &&
       !nextProps.isFetching
     ) {
-      this.props.getAllCustomers()
+      this.props.getAllOrders();
     }
   }
 
-  render () {
-    const {
-      errorMessage,
-      customerList,
-      deleteSuccess,
-      isFetching
-    } = this.props
+  onChangePage(pageOfItems) {
+    if (
+      !this.props.isFetching &&
+      this.state.pageOfItems &&
+      this.props.orderList
+    )
+      this.setState({ pageOfItems: pageOfItems });
+  }
 
-    //  if ( deleteSuccess && !isFetching){
-    //        this.props.getAllCustomers();
-    //  }
-    //  else if (!deleteSuccess && errorMessage){
-    //    this.handleErrorMessage ();
-    //  }
+  onDelete(id) {
+    if (id) {
+      this.handleOpen(id);
+    }
+  }
+
+  handleToggle() {
+    this.setState({ searchOpen: !this.state.searchOpen });
+  }
+
+  handleSearch() {
+    this.setState({ searchOpen: !this.state.searchOpen });
+    this.props.getAllOrders(this.state.search);
+  }
+
+  handleOpen(id) {
+    this.setState({ dialogText: "Are you sure to delete this data?" });
+    this.setState({ open: true });
+    this.setState({ orderId: id });
+  }
+
+  handleClose(isConfirmed) {
+    this.setState({ open: false });
+
+    if (isConfirmed && this.state.orderId) {
+      this.props.deleteOrder(this.state.orderId);
+      this.setState({ orderId: null });
+    }
+  }
+
+  handleSearch() {
+    this.setState({ searchOpen: !this.state.searchOpen });
+    this.props.getAllOrders(this.state.search);
+  }
+
+  handleSearchFilter(event) {
+    const field = event.target.name;
+
+    if (event && event.target && field) {
+      const search = Object.assign({}, this.state.search);
+      search[field] = event.target.value;
+
+      this.setState({ search: search });
+    }
+  }
+
+  handleErrorMessage() {
+    this.setState({
+      snackbarOpen: true
+    });
+  }
+
+  handleSnackBarClose() {
+    this.setState({
+      snackbarOpen: false
+    });
+  }
+
+  render() {
+    const { errorMessage, orderList, customerList } = this.props;
 
     const styles = {
       fab: {
@@ -287,32 +267,6 @@ class OrderListPage extends React.Component {
             onRequestClose={this.handleSnackBarClose}
           />
 
-          {/*<div className='grid-8-col'>
-            <div>
-              .
-            </div>
-            <div>
-              Сотрудник
-            </div>
-            <div>
-              Количество закрытых сделок сотрудником
-            </div>
-            <div>
-              Прибыль принесенная сотрудником
-            </div>
-            <div>
-              Сумма сделки
-            </div>
-            <div>
-              Дата сделки
-            </div>
-            <div>
-              Компания-заказчик
-            </div>
-            <div>
-              .
-            </div>
-          </div>*/}
           <Table
             /*fixedHeader={this.state.fixedHeader}
             fixedFooter={this.state.fixedFooter}*/
@@ -365,7 +319,7 @@ class OrderListPage extends React.Component {
               {this.state.pageOfItems.map(item => (
                 <TableRow key={item.id}>
                   <TableRowColumn style={styles.columns.name}>
-                    {item.firstName + ' ' + item.lastName}
+                    {item.customerName}
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.price}>
                     {item.closedDeals}
@@ -376,19 +330,19 @@ class OrderListPage extends React.Component {
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.category}>
                     {/*{groups[item.group].name}*/}
-                    {`AUD $ ${item.dealSumm}`}
+                    {`AUD $ ${item.amount}`}
                   </TableRowColumn>
 
                   <TableRowColumn style={styles.columns.category}>
-                    {moment(item.dataSumm).format('DD.MM.YYYY')}
+                    {moment(item.orderDate).format('DD.MM.YYYY')}
                   </TableRowColumn>
 
                   <TableRowColumn style={styles.columns.category}>
-                    {item.customerCompanyName}
+                    {item.reference}
                   </TableRowColumn>
 
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className='button' to={'/customer/' + item.id}>
+                    <Link className='button' to={'/order/' + item.id}>
                       <FloatingActionButton
                         zDepth={0}
                         style={styles.editButton}
@@ -404,67 +358,66 @@ class OrderListPage extends React.Component {
               ))}
             </TableBody>
           </Table>
-          {/*<div className={"row center-xs"}>
-            <div className={"col-xs-6"}>
-              <div className={"box"}>
-                <Pagination
-                  items={customerList}
-                  onChangePage={this.onChangePage}
-                />
-              </div>
-            </div>
-          </div>
-*/}
-          {/*<Dialog
-            title="Confirm Dialog "
-            actions={actions}
-            modal={true}
-            contentStyle={styles.dialog}
-            open={this.state.open}
-          >
-            {this.state.dialogText}
-          </Dialog>*/}
         </div>
       </PageBase>
-    )
+    );
   }
 }
 
 OrderListPage.propTypes = {
-  isFetching: PropTypes.bool,
-  customerList: PropTypes.array,
-  getAllCustomers: PropTypes.func.isRequired,
-  deleteCustomer: PropTypes.func.isRequired,
+  orderList: PropTypes.array,
+  getAllOrders: PropTypes.func.isRequired,
+  deleteOrder: PropTypes.func.isRequired,
   deleteSuccess: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string
-}
+};
 
-function mapStateToProps (state) {
-  const {customerReducer} = state
+function mapStateToProps(state) {
+  const { orderReducer } = state;
+  const { customerReducer } = state;
   const {
     customerList,
-    isFetching,
-    deleteSuccess,
-    isAuthenticated,
-    errorMessage,
-    user
-  } = customerReducer
+  } = customerReducer;
 
-  return {
-    customerList,
+  const {
+    orderList,
+    deleteSuccess,
     isFetching,
     isAuthenticated,
     errorMessage,
+    user
+  } = orderReducer;
+
+  orderList.map(order => {
+    let customerName = ''
+
+    if (order.customerId) {
+      let customer = customerList.find((customer) => customer.id === order.customerId)
+      if (customer) {
+        customerName = `${customer.firstName} ${customer.lastName}`
+      }
+    }
+    order.customerName = customerName
+  })
+
+
+  return {
+    orderList,
+    isFetching,
+    isAuthenticated,
+    errorMessage,
     deleteSuccess,
     user
-  }
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    getAllCustomers: filters => dispatch(loadCustomers(filters)),
-    deleteCustomer: id => dispatch(deleteCustomer(id))
-  }
+    getAllOrders: filters => dispatch(loadOrders(filters)),
+    deleteOrder: id => dispatch(deleteOrder(id))
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(OrderListPage);
+
+

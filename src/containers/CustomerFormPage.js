@@ -261,7 +261,6 @@ class CustomerFormPage extends React.Component {
 
             <Divider/>
 
-
             <Paper className='root-tab'>
               <Tabs
                 value={this.state.value}

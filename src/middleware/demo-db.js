@@ -9,7 +9,6 @@ export default {
     dataSumm: '2019-05-12T08:05:19.933Z',
     customerCompanyName: 'order-6-6-1-2',
 
-
     'membership': false,
     'mobile': '555-555-555',
     'rewards': 21,
@@ -148,6 +147,11 @@ export default {
   }],
   'orders': [{
     'id': 2,
+
+    closedDeals: 1,
+    customerName: '',
+    rewards: 2,
+
     'reference': 'order-2-2-1-2',
     'customerId': 2,
     'products': [{
@@ -165,6 +169,9 @@ export default {
     'id': 3,
     'reference': 'order-4-3-1-2',
     'customerId': 4,
+    closedDeals: 5,
+    customerName: '',
+    rewards: 1.99,
     'products': [{
       'id': 1,
       'productName': 'Product HHYDP',
@@ -178,6 +185,9 @@ export default {
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }, {
     'id': 4,
+    customerName: '',
+    closedDeals: 3,
+    rewards: 59.99,
     'reference': 'order-4-4-1-2',
     'customerId': 4,
     'products': [{
@@ -193,6 +203,9 @@ export default {
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
   }, {
     'id': 5,
+    customerName: '',
+    closedDeals: 15,
+    rewards: 99.99,
     'reference': 'order-5-5-1-2',
     'customerId': 5,
     'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
@@ -200,128 +213,6 @@ export default {
     'orderDate': '2017-01-01',
     'shippedDate': '2017-01-01',
     'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 6,
-    'reference': 'order-6-6-1-2',
-    'customerId': 6,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 329.99,
-    'orderDate': '2017-01-01',
-    'shippedDate': '2017-01-01',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 8,
-    'reference': 'order-8-8-1-2',
-    'customerId': 8,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 89.99,
-    'orderDate': '2017-01-12',
-    'shippedDate': '2017-01-10',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 9,
-    'reference': 'order-9-9-1-2',
-    'customerId': 9,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 59.99,
-    'orderDate': '2017-01-01',
-    'shippedDate': '2017-01-01',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 10,
-    'reference': 'order-10-10-1-2',
-    'customerId': 10,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 49.99,
-    'orderDate': '2017-01-01',
-    'shippedDate': '2017-01-01',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 12,
-    'reference': 'order-2-12-1-2',
-    'customerId': 2,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 49.99,
-    'orderDate': '2017-01-01',
-    'shippedDate': '2017-01-01',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 14,
-    'reference': 'order-2-14-1-2',
-    'customerId': 4,
-    'products': [{'id': 5, 'productName': 'Product EPEIM', 'categoryId': 2, 'unitInStock': null, 'unitPrice': 21.5}],
-    'amount': 19.99,
-    'orderDate': '2017-01-09',
-    'shippedDate': '2017-01-01',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'}
-  }, {
-    'id': 15,
-    'reference': 'order-11-15-1-2',
-    'customerId': 11,
-    'products': [{
-      'id': 5,
-      'productName': 'Product EPEIM',
-      'categoryId': 2,
-      'unitInStock': null,
-      'unitPrice': 21.5
-    }, {
-      'id': 19,
-      'productName': 'Product XKXDO',
-      'categoryId': 3,
-      'unitInStock': null,
-      'unitPrice': 9.2,
-      'category': {
-        'id': 3,
-        'categoryName': 'Confections',
-        'description': 'Desserts, candies, and sweet breads',
-        'picture': null
-      },
-      'text': 'Product XKXDO',
-      'value': 19
-    }],
-    'amount': 222,
-    'orderDate': '2017-01-19',
-    'shippedDate': '2017-01-16',
-    'shipAddress': {'address': 'Gran Vía, 0123', 'city': 'Madrid', 'zipcode': '10298', 'country': 'Spain'},
-    'quantity': 12,
-    'price': 33
-  }, {
-    'products': [{
-      'id': 4,
-      'productName': 'Product KSBRM',
-      'categoryId': 2,
-      'unitInStock': 2,
-      'unitPrice': 22,
-      'category': {
-        'id': 2,
-        'categoryName': 'Condiments',
-        'description': 'Sweet and savory sauces, relishes, spreads, and seasonings',
-        'picture': null
-      },
-      'text': 'Product KSBRM',
-      'value': 4
-    }, {
-      'id': 6,
-      'productName': 'Product VAIIV',
-      'categoryId': 2,
-      'unitInStock': null,
-      'unitPrice': 25,
-      'category': {
-        'id': 2,
-        'categoryName': 'Condiments',
-        'description': 'Sweet and savory sauces, relishes, spreads, and seasonings',
-        'picture': null
-      },
-      'text': 'Product VAIIV',
-      'value': 6
-    }],
-    'customerId': 4,
-    'orderDate': '2017-08-08',
-    'shippedDate': null,
-    'shipAddress': {'address': 'sss', 'city': 'sss', 'zipcode': 'sss', 'country': 'sss'},
-    'reference': 'ss-2-22-22',
-    'amount': 2323,
-    'id': 16
   }],
   'products': [{'id': 1, 'productName': 'Product HHYDP', 'categoryId': 1, 'unitInStock': 23, 'unitPrice': 18}, {
     'id': 2,

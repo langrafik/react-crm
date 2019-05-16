@@ -237,7 +237,7 @@ class OrderFormPage extends React.Component {
             <GridList cols={3} cellHeight={60}>
               <GridTile>
                 <FormsySelect
-                  floatingLabelText="Customer"
+                  floatingLabelText="Сотрудник"
                   value={order.customer ? order.customer.id : 0}
                   onChange={this.handleChange}
                   style={styles.customWidth}
@@ -261,7 +261,7 @@ class OrderFormPage extends React.Component {
               <GridTile>
                 <FormsyText
                   hintText="Reference"
-                  floatingLabelText="Reference"
+                  floatingLabelText="Компания-заказчик"
                   name="reference"
                   onChange={this.handleChange}
                   fullWidth={true}
@@ -280,7 +280,7 @@ class OrderFormPage extends React.Component {
               <GridTile>
                 <FormsyText
                   hintText="Amount"
-                  floatingLabelText="Amount"
+                  floatingLabelText="Сумма сделки"
                   fullWidth={true}
                   name="price"
                   onChange={this.handleChange}
@@ -298,13 +298,12 @@ class OrderFormPage extends React.Component {
 
               <GridTile>
                 <FormsyText
-                  hintText="Quantity"
-                  floatingLabelText="Quantity"
+                  floatingLabelText="Прибыль"
                   fullWidth={true}
                   type="number"
-                  name="quantity"
+                  name="rewards"
                   onChange={this.handleChange}
-                  value={order.products ? order.products.length : 0}
+                  value={order.rewards}
                   validations={{
                     isInt: true
                   }}
@@ -317,8 +316,7 @@ class OrderFormPage extends React.Component {
               </GridTile>
               <GridTile>
                 <FormsyDate
-                  hintText="Order Date"
-                  floatingLabelText="Order Date"
+                  floatingLabelText="Дата сделки"
                   disabled={true}
                   name="orderDate"
                   onChange={this.handleChange}
@@ -329,114 +327,9 @@ class OrderFormPage extends React.Component {
                 />
               </GridTile>
 
-              <GridTile>
-                <FormsyDate
-                  hintText="Shipped Date"
-                  floatingLabelText="Shipped Date"
-                  fullWidth={false}
-                  name="shippedDate"
-                  onChange={this.handleChange}
-                  value={
-                    order.shippedDate ? new Date(order.shippedDate) : new Date()
-                  }
-                  required
-                />
-              </GridTile>
-
-              <GridTile>
-                <FormsyText
-                  hintText="Address"
-                  floatingLabelText="Address"
-                  name="shipAddress.address"
-                  onChange={this.handleChange}
-                  fullWidth={true}
-                  value={
-                    order.shipAddress && order.shipAddress.address
-                      ? order.shipAddress.address
-                      : ""
-                  }
-                  validations={{
-                    isWords: true
-                  }}
-                  validationErrors={{
-                    isWords: "Please provide valid address",
-                    isDefaultRequiredValue: "This is a required field"
-                  }}
-                  required
-                />
-              </GridTile>
-
-              <GridTile>
-                <FormsyText
-                  hintText="City"
-                  floatingLabelText="City"
-                  name="reference"
-                  onChange={this.handleChange}
-                  fullWidth={true}
-                  value={
-                    order.shipAddress && order.shipAddress.city
-                      ? order.shipAddress.city
-                      : ""
-                  }
-                  validations={{
-                    isWords: true
-                  }}
-                  validationErrors={{
-                    isWords: "Please provide valid city",
-                    isDefaultRequiredValue: "This is a required field"
-                  }}
-                  required
-                />
-              </GridTile>
-
-              <GridTile>
-                <FormsyText
-                  hintText="Country"
-                  floatingLabelText="Country"
-                  name="reference"
-                  onChange={this.handleChange}
-                  fullWidth={true}
-                  value={
-                    order.shipAddress && order.shipAddress.country
-                      ? order.shipAddress.country
-                      : ""
-                  }
-                  validations={{
-                    isWords: true
-                  }}
-                  validationErrors={{
-                    isWords: "Please provide valid country",
-                    isDefaultRequiredValue: "This is a required field"
-                  }}
-                  required
-                />
-              </GridTile>
-
-              <GridTile>
-                <FormsyText
-                  hintText="Zip Code"
-                  floatingLabelText="Zip Code"
-                  name="reference"
-                  onChange={this.handleChange}
-                  fullWidth={true}
-                  value={
-                    order.shipAddress && order.shipAddress.zipcode
-                      ? order.shipAddress.zipcode
-                      : ""
-                  }
-                  validations={{
-                    isWords: true
-                  }}
-                  validationErrors={{
-                    isWords: "Please provide valid zip code",
-                    isDefaultRequiredValue: "This is a required field"
-                  }}
-                  required
-                />
-              </GridTile>
             </GridList>
 
-            <p style={styles.productList}>Product List: </p>
+            <p style={styles.productList}>Список продуктов: </p>
             <Divider />
 
             {order.products && (
@@ -608,3 +501,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderFormPage);
+
+
