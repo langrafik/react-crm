@@ -93,6 +93,7 @@ a:hover {
 .grid-2-col {
   grid-template-columns: auto auto;
   justify-content: center;
+  min-height: 120px;
 }
 
 .grid-3-col, .grid-5-col, .grid-2-col {
@@ -107,6 +108,10 @@ a:hover {
 
 .grid-5-col {
   grid-template-columns: auto 100px 600px auto auto;
+}
+
+.grid-6-col {
+  grid-template-columns: auto 100px 300px auto auto auto;
 }
 
 .grid-8-col {

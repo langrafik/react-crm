@@ -6,6 +6,7 @@ import Toggle from 'material-ui/Toggle'
 import { green400, grey400, grey500, white } from 'material-ui/styles/colors'
 import Divider from 'material-ui/Divider'
 import PageBase from '../components/PageBase'
+import Dialog from 'material-ui/Dialog'
 
 import { connect } from 'react-redux'
 import { GridList, GridTile } from 'material-ui/GridList'
@@ -32,6 +33,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import DatePicker from 'material-ui/DatePicker'
 import moment from 'moment'
 import Data from '../data'
+import FlatButton from 'material-ui/FlatButton'
 
 const groups = Data.groups
 
@@ -54,74 +56,17 @@ const kpiWeight = [
   }
 ]
 
-const styles = {
-  fab: {
-    // margin: 0,
-    top: "auto",
-    right: 20,
-    bottom: 20,
-    left: "auto",
-    position: "fixed",
-    marginRight: 20
-  },
-  fabSearch: {
-    // margin: 0,
-    top: "auto",
-    right: 100,
-    bottom: 20,
-    left: "auto",
-    position: "fixed",
-    marginRight: 20,
-    backgroundColor: "lightblue"
-  },
-  editButton: {
-    paddingRight: 25
-  },
-  editButtonIcon: {
-    fill: white
-  },
-  deleteButton: {
-    fill: grey500
-  },
-  columns: {
-    id: {
-      width: "10%"
-    },
-    name: {
-      width: "20%"
-    },
-    price: {
-      width: "20%"
-    },
-    category: {
-      width: "20%"
-    },
-    edit: {
-      width: "20%"
-    }
-  },
-  dialog: {
-    width: "20%",
-    maxWidth: "none"
-  },
-  drawer: {
-    backgroundColor: "lightgrey"
-  }
-};
-
 const priority = {
   0: 'Низкий',
   1: 'Нормальный',
   2: 'Высокий'
 }
 
-
 const statuses = {
   0: 'Не выполнен',
   1: 'Выполнен',
   2: 'В процессе'
 }
-
 
 class CustomerFormPage extends React.Component {
   constructor (props) {
@@ -132,12 +77,23 @@ class CustomerFormPage extends React.Component {
       customer: {},
       tabIndex: 0,
       showMoreKpi: false,
-      totalKpi: null
+      kpiShow: false,
+      totalKpi: null,
+      scroll: 'paper',
+
+      //for adding kpi
+      name: 'Имя параметра',
+      floatText: 'Плавающий текст',
+      paramName: 'Имя параметра в БД',
+      floatText2: 'Плавающий текст 2',
+      paramName2: 'Имя параметра 2 в БД',
+      znak: '/'
     }
 
     this.handleGroupChange = this.handleGroupChange.bind(this)
     this.handleTabChange = this.handleTabChange.bind(this)
     this.handleCalculateClick = this.handleCalculateClick.bind(this)
+    this.handleAddKpi = this.handleAddKpi.bind(this)
   }
 
   componentWillMount () {
@@ -174,6 +130,15 @@ class CustomerFormPage extends React.Component {
     }
   }
 
+  handleAddKpiChange (event) {
+    const field = event.target.name
+    // const { customer } = this.state;
+
+    if (event && event.target && field) {
+      this.setState({field: event.target.value})
+    }
+  }
+
   handleTabChange (event, value) {
     this.setState({tabIndex: value})
   }
@@ -194,15 +159,15 @@ class CustomerFormPage extends React.Component {
       switch (kpi.znak) {
         case '+':
           paramsCalc = (customer[kpi.paramName] + customer[kpi.paramName2])
-          break;
+          break
 
         case '-':
           paramsCalc = (customer[kpi.paramName] - customer[kpi.paramName2])
-          break;
+          break
 
         case '*':
           paramsCalc = (customer[kpi.paramName] * customer[kpi.paramName2])
-          break;
+          break
 
         default:
           paramsCalc = (customer[kpi.paramName] / customer[kpi.paramName2])
@@ -210,12 +175,49 @@ class CustomerFormPage extends React.Component {
 
       let tmpKpi = customer[`kpiWeight${index}`] * paramsCalc
 
-      totalKpi = totalKpi + tmpKpi;
+      totalKpi = totalKpi + tmpKpi
     })
 
     customer['totalKpi'] = totalKpi
 
     this.setState({totalKpi})
+  }
+
+  toggleAddKpiWindow () {
+    this.setState({
+      kpiShow: !this.state.kpiShow
+    })
+  }
+
+  handleAddKpi () {
+    const {
+      name,
+      floatText,
+      paramName,
+      floatText2,
+      paramName2,
+      znak,
+      customer
+    } = this.state
+
+    customer.kpiArray.push({
+      name,
+      floatText,
+      paramName,
+      floatText2,
+      paramName2,
+      znak
+    })
+
+    this.setState({
+      kpiShow: false,
+      name: 'Имя параметра',
+      floatText: 'Плавающий текст',
+      paramName: 'Имя параметра в БД',
+      floatText2: 'Плавающий текст 2',
+      paramName2: 'Имя параметра 2 в БД',
+      znak: '/'
+    })
   }
 
   enableButton () {
@@ -243,7 +245,29 @@ class CustomerFormPage extends React.Component {
   render () {
     const {errorMessage} = this.props
 
-    const {isFetching, customer, totalKpi, showMoreKpi} = this.state
+    const {
+      isFetching, customer, totalKpi, showMoreKpi, kpiShow,
+      name,
+      floatText,
+      paramName,
+      floatText2,
+      paramName2,
+      znak,
+    } = this.state
+
+    const actions = [
+      <FlatButton
+        label='Отмена'
+        value={false}
+        onTouchTap={() => this.toggleAddKpiWindow(false)}
+      />,
+      <FlatButton
+        label='Добавить'
+        primary={true}
+        value={true}
+        onTouchTap={() => this.handleAddKpi()}
+      />
+    ]
 
     const styles = {
       toggleDiv: {
@@ -265,6 +289,11 @@ class CustomerFormPage extends React.Component {
       card: {
         width: 120
       },
+      dialog: {
+        height: 600,
+        minHeight: 1200,
+        overflowX: 'auto',
+      },
       columns: {
         width: '16.7%'
       }
@@ -283,6 +312,24 @@ class CustomerFormPage extends React.Component {
             onValidSubmit={this.handleClick}
             onInvalidSubmit={this.notifyFormError}
           >
+
+
+            {/*<Dialog
+              title='Добаление KPI'
+              actions={actions}
+              scroll='paper'
+              open={kpiShow}
+              contentStyle={{
+                overflowX: 'auto',
+                overflowY: 'auto',
+                minHeight: 1200
+              }}
+            >
+
+
+            </Dialog>*/}
+
+
             <GridList cellHeight={230}>
               <GridTile>
                 <FormsyText
@@ -630,7 +677,7 @@ class CustomerFormPage extends React.Component {
                       <div className=''>
                         <DatePicker
                           defaultDate={new Date(customer.dataSumm)}
-                          floatingLabelText="Дата сделки"
+                          floatingLabelText='Дата сделки'
                           fullWidth={true}
                           formatDate={(date) => moment(date).format('DD.MM.YYYY')}
                         />
@@ -723,374 +770,251 @@ class CustomerFormPage extends React.Component {
                 <Tab label='KPI'>
                   <div className='customer-page'>
 
-                    <div className='grid-2-col'>
-                      <div className='item-a kpi'>
-                        KPI
-                      </div>
+                    {kpiShow ?
 
-                      <div className='item-a fact'>
-                        ФАКТ
-                      </div>
-                    </div>
-
-                    {/*<div className='grid-5-col'>
-                      <div className='col'>
-                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 1</div>
-                      </div>
-                      <div className='col'>
-                        <div className='col'>
-                          <FormsyText
-                            hintText='%'
-                            floatingLabelText='Вес KPI %'
-                            fullWidth={true}
-                            type='number'
-                            name='kpiWeight1'
-                            onChange={this.handleChange}
-                            value={customer.kpiWeight1}
-                            validations={{
-                              isInt: true
-                            }}
-                            validationErrors={{
-                              isInt: 'Введите валидное число',
-                            }}
-                            required
-                            positive
-                          />
+                      <div>
+                        <div style={{
+                          marginLeft: 'auto',
+                          marginRight:'auto',
+                          textAlign: 'center',
+                          fontSize: '30px'
+                        }}>
+                          Добавление KPI
                         </div>
-                      </div>
 
-                      <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>Средний объем заказа</div>
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          hintText='Объем заказов'
-                          floatingLabelText='Объем заказов'
-                          fullWidth={true}
-                          type='number'
-                          name='Vzak'
-                          onChange={this.handleChange}
-                          value={customer.Vzak}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          hintText='Количество заявок'
-                          floatingLabelText='Количество заявок'
-                          fullWidth={true}
-                          type='number'
-                          name='Nzak'
-                          onChange={this.handleChange}
-                          value={customer.Nzak}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-                    </div>
-
-                    <div className='grid-5-col'>
-                      <div className='col'>
-                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 2</div>
-                      </div>
-                      <div className='col'>
-                        <div className='col'>
-                          <FormsyText
-                            hintText='%'
-                            floatingLabelText='Вес KPI %'
-                            fullWidth={true}
-                            type='number'
-                            name='kpiWeight2'
-                            onChange={this.handleChange}
-                            value={customer.kpiWeight2}
-                            validations={{
-                              isInt: true
-                            }}
-                            validationErrors={{
-                              isInt: 'Введите валидное число',
-                            }}
-                            required
-                            positive
-                          />
-                        </div>
-                      </div>
-
-                      <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>Коэффициент выполнения целевых показателей
-                        </div>
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          hintText='Целевые показатели'
-                          floatingLabelText='Целевые показатели'
-                          fullWidth={true}
-                          type='number'
-                          name='CP'
-                          onChange={this.handleChange}
-                          value={customer.CP}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          floatingLabelText='Общее число ЦП'
-                          fullWidth={true}
-                          type='number'
-                          name='CPplan'
-                          onChange={this.handleChange}
-                          value={customer.CPplan}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-                    </div>
-
-                    <div className='grid-5-col'>
-                      <div className='col'>
-                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 3</div>
-                      </div>
-                      <div className='col'>
-                        <div className='col'>
-                          <FormsyText
-                            floatingLabelText='Вес KPI %'
-                            fullWidth={true}
-                            type='number'
-                            name='kpiWeight3'
-                            onChange={this.handleChange}
-                            value={customer.kpiWeight3}
-                            validations={{
-                              isInt: true
-                            }}
-                            validationErrors={{
-                              isInt: 'Введите валидное число',
-                            }}
-                            required
-                            positive
-                          />
-                        </div>
-                      </div>
-
-                      <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>Количество товарных позиций</div>
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          floatingLabelText='Кол-во позиций у сотрудника'
-                          fullWidth={true}
-                          type='number'
-                          name='CustomerGoods'
-                          onChange={this.handleChange}
-                          value={customer.CustomerGoods}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-
-                      <div className='col'>
-                        <FormsyText
-                          floatingLabelText='В компании'
-                          fullWidth={true}
-                          type='number'
-                          name='CompanyGoods'
-                          onChange={this.handleChange}
-                          value={customer.CompanyGoods}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
-                        />
-                      </div>
-                    </div>*/}
-
-                    {
-                      kpiArray.map((kpi, index) =>
-                        <div className='grid-5-col'>
+                        <div className='grid-2-col'>
                           <div className='col'>
-                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI {index}</div>
-                          </div>
-                          <div className='col'>
-                            <div className='col'>
-                              <FormsyText
-                                floatingLabelText='Вес KPI %'
-                                fullWidth={true}
-                                type='number'
-                                name={`kpiWeight${index}`}
-                                onChange={this.handleChange}
-                                value={customer[`kpiWeight${index}`]}
-                                required
-                                positive
-                              />
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите label параметра
                             </div>
                           </div>
-
-                          <div className='col'>
-                            <div style={{marginTop: '40px', fontSize: '20px'}}>{kpi.name}</div>
-                          </div>
-
                           <div className='col'>
                             <FormsyText
-                              floatingLabelText={kpi.floatText}
+                              floatingLabelText='label'
                               fullWidth={true}
-                              type={kpi.type || 'number'}
-                              name={kpi.paramName}
-                              onChange={this.handleChange}
-                              value={customer[kpi.paramName]}
-                            />
-                          </div>
-
-                          <div className='col'>
-                            <FormsyText
-                              floatingLabelText={kpi.floatText2}
-                              fullWidth={true}
-                              type={kpi.type2 || 'number'}
-                              name={kpi.paramName2}
-                              onChange={this.handleChange}
-                              value={customer[kpi.paramName2]}
+                              type='text'
+                              name='name'
+                              onChange={this.handleAddKpiChange}
+                              value={name}
                             />
                           </div>
                         </div>
-                      )
-                    }
 
-                    {showMoreKpi && <div className='grid-5-col'>
-                      <div className='col'>
-                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI {kpiNumber}</div>
-                      </div>
-                      <div className='col'>
-                        <div className='col'>
-                          <FormsyText
-                            hintText='%'
-                            floatingLabelText='Вес KPI %'
-                            fullWidth={true}
-                            type='number'
-                            name='kpiWeight1'
-                            onChange={this.handleChange}
-                            value={customer.kpiWeight1}
-                            validations={{
-                              isInt: true
-                            }}
-                            validationErrors={{
-                              isInt: 'Введите валидное число',
-                            }}
-                            required
-                            positive
-                          />
+                        <div className='grid-2-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите текст подсказки
+                            </div>
+                          </div>
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText='Подсказка'
+                              fullWidth={true}
+                              type='text'
+                              name='floatText'
+                              onChange={this.handleAddKpiChange}
+                              value={floatText}
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      <div className='col'>
-                        <div style={{marginTop: '40px', fontSize: '20px'}}>Средний объем заказа</div>
-                      </div>
+                        <div className='grid-2-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите имя параметра в БД
+                            </div>
+                          </div>
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText='paramName'
+                              fullWidth={true}
+                              type='text'
+                              name='paramName'
+                              onChange={this.handleAddKpiChange}
+                              value={paramName}
+                            />
+                          </div>
+                        </div>
 
-                      <div className='col'>
-                        <FormsyText
-                          hintText='Объем заказов'
-                          floatingLabelText='Объем заказов'
-                          fullWidth={true}
-                          type='number'
-                          name='Vzak'
-                          onChange={this.handleChange}
-                          value={customer.Vzak}
-                          validations={{
-                            isInt: true
-                          }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
+                        <div className='grid-2-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите текст подсказки 2
+                            </div>
+                          </div>
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText='floatText2'
+                              fullWidth={true}
+                              type='text'
+                              name='floatText2'
+                              onChange={this.handleAddKpiChange}
+                              value={floatText2}
+                            />
+                          </div>
+                        </div>
+
+                        <div className='grid-2-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите имя параметра 2 в БД
+                            </div>
+                          </div>
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText='paramName2'
+                              fullWidth={true}
+                              type='text'
+                              name='paramName2'
+                              onChange={this.handleAddKpiChange}
+                              value={paramName2}
+                            />
+                          </div>
+                        </div>
+
+                        <div className='grid-2-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>
+                              Введите знак отношений между параметрами (+, -, \, *)
+                            </div>
+                          </div>
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText='znak'
+                              fullWidth={true}
+                              type='text'
+                              name='znak'
+                              onChange={this.handleAddKpiChange}
+                              value={znak}
+                            />
+                          </div>
+                        </div>
+
+                        {actions}
+                      </div> :
+
+                      <div>
+                        <div className='grid-2-col'>
+                          <div className='item-a kpi'>
+                            KPI
+                          </div>
+
+                          <div className='item-a fact'>
+                            ФАКТ
+                          </div>
+                        </div>
+
+                        {
+                          kpiArray.map((kpi, index) =>
+                            <div className='grid-5-col'>
+                              <div className='col'>
+                                <div
+                                  style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI {index}</div>
+                              </div>
+
+                              <div className='col'>
+                                <div className='col'>
+                                  <FormsyText
+                                    floatingLabelText='Вес KPI %'
+                                    fullWidth={true}
+                                    type='number'
+                                    name={`kpiWeight${index}`}
+                                    onChange={this.handleChange}
+                                    value={customer[`kpiWeight${index}`]}
+                                    required
+                                    positive
+                                  />
+                                </div>
+                              </div>
+
+                              <div className='col'>
+                                <div style={{marginTop: '40px', fontSize: '20px'}}>{kpi.name}</div>
+                              </div>
+
+                              <div className='col'>
+                                <FormsyText
+                                  floatingLabelText={kpi.floatText}
+                                  fullWidth={true}
+                                  type={kpi.type || 'number'}
+                                  name={kpi.paramName}
+                                  onChange={this.handleChange}
+                                  value={customer[kpi.paramName]}
+                                />
+                              </div>
+
+
+                              <div className='col'>
+                                <FormsyText
+                                  floatingLabelText={kpi.floatText2}
+                                  fullWidth={true}
+                                  type={kpi.type2 || 'number'}
+                                  name={kpi.paramName2}
+                                  onChange={this.handleChange}
+                                  value={customer[kpi.paramName2]}
+                                />
+                              </div>
+                            </div>
+                          )
+                        }
+
+
+                        {/*<Dialog
+                      open={this.state.open}
+                      onClose={this.handleClose}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          To subscribe to this website, please enter your email address here. We will send
+                          updates occasionally.
+                        </DialogContentText>
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="name"
+                          label="Email Address"
+                          type="email"
+                          fullWidth
                         />
-                      </div>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                          Cancel
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary">
+                          Subscribe
+                        </Button>
+                      </DialogActions>
+                    </Dialog>*/}
 
-                      <div className='col'>
-                        <FormsyText
-                          hintText='Количество заявок'
-                          floatingLabelText='Количество заявок'
-                          fullWidth={true}
-                          type='number'
-                          name='Nzak'
-                          onChange={this.handleChange}
-                          value={customer.Nzak}
-                          validations={{
-                            isInt: true
+
+                        <RaisedButton
+                          label='Добавить KPI'
+                          type='button'
+                          style={{
+                            margin: '10'
                           }}
-                          validationErrors={{
-                            isInt: 'Введите валидное число',
-                          }}
-                          required
-                          positive
+                          onClick={() => this.toggleAddKpiWindow(event)}
+                          primary={true}
                         />
-                      </div>
-                    </div>}
 
-{/*
-                    <RaisedButton
-                      label='Добавить KPI'
-                      type='button'
-                      style={{
-                        margin: '10 500'
-                      }}
-                      onClick={() => this.handleCalculateClick(event)}
-                      primary={true}
-                    />
-*/}
+                        <RaisedButton
+                          label='Рассчитать'
+                          type='button'
+                          style={{
+                            margin: '10 500'
+                          }}
+                          onClick={() => this.handleCalculateClick(event)}
+                          primary={true}
+                        />
 
 
-                    <RaisedButton
-                      label='Рассчитать'
-                      type='button'
-                      style={{
-                        margin: '10 500'
-                      }}
-                      onClick={() => this.handleCalculateClick(event)}
-                      primary={true}
-                    />
+                        {customer.totalKpi !== null && <div className='total-kpi'>
+                          Сотрудник эффективен на {customer.totalKpi.toFixed(2)} %
+                        </div>}
 
-
-                    {customer.totalKpi !== null && <div className='total-kpi'>
-                      Сотрудник эффективен на {customer.totalKpi.toFixed(2)} %
-                    </div>}
+                      </div>}
 
                   </div>
 
