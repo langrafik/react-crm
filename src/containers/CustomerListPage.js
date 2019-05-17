@@ -24,7 +24,7 @@ import {
   white
 } from "material-ui/styles/colors";
 import PageBase from "../components/PageBase";
-// import Data from '../data';
+import Data from '../data';
 import Pagination from "../components/Pagination";
 import { connect } from "react-redux";
 import { loadCustomers, deleteCustomer } from "../actions/customer";
@@ -34,20 +34,9 @@ import Drawer from "material-ui/Drawer";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
 
-const groups = [
-  {
-    id: 0,
-    name: 'Маркетолог'
-  },
-  {
-    id: 1,
-    name: 'Оператор'
-  },
-  {
-    id: 2,
-    name: 'Руководитель'
-  }
-]
+const groups = Data.groups
+
+console.log('groups', groups)
 
 class CustomerListPage extends React.Component {
   constructor(props) {

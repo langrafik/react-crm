@@ -23,7 +23,6 @@ ds.customers.map((c) => {
   customers.push(JSON.parse(localStorage.getItem(c.id)))
 })
 
-
 const data = {
   menus: [
     { text: "Главное", icon: <Assessment />, link: "/dashboard" },
@@ -51,6 +50,24 @@ const data = {
       { id: 11, name: "Product 8", price: "$750.00", category: "Category 8" }
     ]
   },
+  groups: [
+    {
+      id: 0,
+      name: 'Маркетолог'
+    },
+    {
+      id: 1,
+      name: 'Оператор'
+    },
+    {
+      id: 2,
+      name: 'Руководитель'
+    },
+    {
+      id: 3,
+      name: 'Мерчендайзер'
+    }
+  ],
   dashBoardPage: {
     recentProducts: [
       {
@@ -98,7 +115,9 @@ const data = {
       { name: "Операторы", value: 300, color: pink600, icon: <ChevronRight /> },
       { name: "Руководители", value: 300, color: purple600, icon: <ExpandLess /> }
     ],
-    lineBarChart: [customers]
+    lineBarChart: [customers],
+
+
       /*{ name: "Page A", uv: 590, pv: 800, amt: 1400 },
       { name: "Page B", uv: 868, pv: 967, amt: 1506 },
       { name: "Page C", uv: 1397, pv: 1098, amt: 989 },
@@ -109,3 +128,4 @@ const data = {
 };
 
 export default data;
+

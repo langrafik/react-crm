@@ -31,21 +31,9 @@ import Paper from 'material-ui/Paper'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import DatePicker from 'material-ui/DatePicker'
 import moment from 'moment'
+import Data from '../data'
 
-const groups = [
-  {
-    id: 0,
-    name: 'Маркетолог'
-  },
-  {
-    id: 1,
-    name: 'Оператор'
-  },
-  {
-    id: 2,
-    name: 'Руководитель'
-  }
-]
+const groups = Data.groups
 
 const kpiWeight = [
   {
@@ -143,6 +131,7 @@ class CustomerFormPage extends React.Component {
       isFetching: this.props.routeParams.id ? true : false,
       customer: {},
       tabIndex: 0,
+      showMoreKpi: false,
       totalKpi: null
     }
 
@@ -197,12 +186,32 @@ class CustomerFormPage extends React.Component {
 
   handleCalculateClick () {
     let customer = this.state.customer
+    let totalKpi = 0
 
-    let kpi1 = customer.kpiWeight1 * (customer.Vzak / customer.Nzak)
-    let kpi2 = customer.kpiWeight2 * (customer.CP / customer.CPplan)
-    let kpi3 = customer.kpiWeight3 * (customer.CustomerGoods / customer.CompanyGoods)
+    customer.kpiArray.map((kpi, index) => {
+      let paramsCalc = 0
 
-    let totalKpi = (kpi1 + kpi2 + kpi3) / 3
+      switch (kpi.znak) {
+        case '+':
+          paramsCalc = (customer[kpi.paramName] + customer[kpi.paramName2])
+          break;
+
+        case '-':
+          paramsCalc = (customer[kpi.paramName] - customer[kpi.paramName2])
+          break;
+
+        case '*':
+          paramsCalc = (customer[kpi.paramName] * customer[kpi.paramName2])
+          break;
+
+        default:
+          paramsCalc = (customer[kpi.paramName] / customer[kpi.paramName2])
+      }
+
+      let tmpKpi = customer[`kpiWeight${index}`] * paramsCalc
+
+      totalKpi = totalKpi + tmpKpi;
+    })
 
     customer['totalKpi'] = totalKpi
 
@@ -234,7 +243,7 @@ class CustomerFormPage extends React.Component {
   render () {
     const {errorMessage} = this.props
 
-    const {isFetching, customer, totalKpi} = this.state
+    const {isFetching, customer, totalKpi, showMoreKpi} = this.state
 
     const styles = {
       toggleDiv: {
@@ -263,6 +272,9 @@ class CustomerFormPage extends React.Component {
     if (isFetching) {
       return <CircularProgress/>
     } else {
+
+      const kpiArray = customer.kpiArray
+
       return (
         <PageBase title='Сотрудник' navigation='Карточка сотрудника'>
           <Formsy.Form
@@ -721,7 +733,7 @@ class CustomerFormPage extends React.Component {
                       </div>
                     </div>
 
-                    <div className='grid-5-col'>
+                    {/*<div className='grid-5-col'>
                       <div className='col'>
                         <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI 1</div>
                       </div>
@@ -929,7 +941,141 @@ class CustomerFormPage extends React.Component {
                           positive
                         />
                       </div>
-                    </div>
+                    </div>*/}
+
+                    {
+                      kpiArray.map((kpi, index) =>
+                        <div className='grid-5-col'>
+                          <div className='col'>
+                            <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI {index}</div>
+                          </div>
+                          <div className='col'>
+                            <div className='col'>
+                              <FormsyText
+                                floatingLabelText='Вес KPI %'
+                                fullWidth={true}
+                                type='number'
+                                name={`kpiWeight${index}`}
+                                onChange={this.handleChange}
+                                value={customer[`kpiWeight${index}`]}
+                                required
+                                positive
+                              />
+                            </div>
+                          </div>
+
+                          <div className='col'>
+                            <div style={{marginTop: '40px', fontSize: '20px'}}>{kpi.name}</div>
+                          </div>
+
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText={kpi.floatText}
+                              fullWidth={true}
+                              type={kpi.type || 'number'}
+                              name={kpi.paramName}
+                              onChange={this.handleChange}
+                              value={customer[kpi.paramName]}
+                            />
+                          </div>
+
+                          <div className='col'>
+                            <FormsyText
+                              floatingLabelText={kpi.floatText2}
+                              fullWidth={true}
+                              type={kpi.type2 || 'number'}
+                              name={kpi.paramName2}
+                              onChange={this.handleChange}
+                              value={customer[kpi.paramName2]}
+                            />
+                          </div>
+                        </div>
+                      )
+                    }
+
+                    {showMoreKpi && <div className='grid-5-col'>
+                      <div className='col'>
+                        <div style={{marginTop: '40px', marginRight: '20px', fontSize: '20px'}}>KPI {kpiNumber}</div>
+                      </div>
+                      <div className='col'>
+                        <div className='col'>
+                          <FormsyText
+                            hintText='%'
+                            floatingLabelText='Вес KPI %'
+                            fullWidth={true}
+                            type='number'
+                            name='kpiWeight1'
+                            onChange={this.handleChange}
+                            value={customer.kpiWeight1}
+                            validations={{
+                              isInt: true
+                            }}
+                            validationErrors={{
+                              isInt: 'Введите валидное число',
+                            }}
+                            required
+                            positive
+                          />
+                        </div>
+                      </div>
+
+                      <div className='col'>
+                        <div style={{marginTop: '40px', fontSize: '20px'}}>Средний объем заказа</div>
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='Объем заказов'
+                          floatingLabelText='Объем заказов'
+                          fullWidth={true}
+                          type='number'
+                          name='Vzak'
+                          onChange={this.handleChange}
+                          value={customer.Vzak}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+
+                      <div className='col'>
+                        <FormsyText
+                          hintText='Количество заявок'
+                          floatingLabelText='Количество заявок'
+                          fullWidth={true}
+                          type='number'
+                          name='Nzak'
+                          onChange={this.handleChange}
+                          value={customer.Nzak}
+                          validations={{
+                            isInt: true
+                          }}
+                          validationErrors={{
+                            isInt: 'Введите валидное число',
+                          }}
+                          required
+                          positive
+                        />
+                      </div>
+                    </div>}
+
+{/*
+                    <RaisedButton
+                      label='Добавить KPI'
+                      type='button'
+                      style={{
+                        margin: '10 500'
+                      }}
+                      onClick={() => this.handleCalculateClick(event)}
+                      primary={true}
+                    />
+*/}
+
 
                     <RaisedButton
                       label='Рассчитать'

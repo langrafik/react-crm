@@ -37,6 +37,34 @@ export default {
     CustomerGoods: 40,
     CompanyGoods: 40,
 
+    kpiArray: [
+      {
+        name: 'Средний объем заказа',
+        floatText: 'Объем заказов',
+        paramName: 'CustomerGoods',
+        floatText2: 'В компании',
+        paramName2: 'CompanyGoods',
+        znak: '/'
+      },
+      {
+        name: 'Средний объем заказа',
+        floatText: 'Объем заказов',
+        paramName: 'CustomerGoods',
+        floatText2: 'В компании',
+        paramName2: 'CompanyGoods',
+        znak: '/'
+      },
+      {
+        name: 'Средний объем заказа',
+        floatText: 'Объем заказов',
+        paramName: 'CustomerGoods',
+        floatText2: 'В компании',
+        paramName2: 'CompanyGoods',
+        znak: '/'
+      }
+
+    ],
+
     tasks: [
       {
         id: 1,
